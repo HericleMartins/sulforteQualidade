@@ -1,0 +1,1 @@
+Pasta usada pelo sistema para armazenar os TXT já lidos e inseridos com sucesso

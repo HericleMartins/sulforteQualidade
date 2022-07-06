@@ -1,0 +1,51 @@
+<div class="panel panel-default acompanhamento">
+    <div class="panel-heading panel-heading-pai">
+        <h3 class="panel-title">Acompanhamento corte/solda</h3>
+        <span class="pull-right clickable"><i class="fa fa-chevron-circle-up fa-2x pl-xxs"></i></span>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table class="table acompanhamento">
+                        <thead>
+                            <td width="5%"><b>Bobina</b></td>
+                            <td width="4%"><b>Pista</b></td>
+                            <td width="7%"><b>Largura</b></td>
+                            <td width="7%"><b>Comprimento</b></td>
+                            <td width="10%"><b>Sanfona</b></td>
+                            <td width="5%"><b>Faca</b></td>
+                            <td width="7%"><b>Solda</b></td>
+                            <td width="7%"><b>Sacaria</b></td>
+                            <td width="7%"><b>Impressão</b></td>
+                            <td width="13%"><b>Analista</b></td>
+                            <td width="13%"><b>Data - Hora</b></td>
+                            <td width="15%" align="center" class="text-nowrap"><b>Ações</b></td>
+                        </thead>
+                        <tbody>
+                        <!-- START BLOCK : lista-bobina -->
+                        <tr>
+                            {linha}
+                            <td align="center" class="text-nowrap">
+                                <button type="button" class="btn btn-primary m-top-xs-5" title="Visualizar" onclick="visualizarDetalhe({id}, {tipo}, {idordemProducao}, {idmaquina})"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                <button type="button" {permissao-editar} class="btn btn-success m-top-xs-5" title="Editar" onclick="editarDetalhe({id}, {tipo}, {idordemProducao}, {idmaquina})"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button type="button" {permissao-remover} class="btn btn-danger m-top-xs-5" title="Excluir" onclick="excluirCorte({id},{tipo})"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                        <!-- END BLOCK : lista-bobina -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 text-left">
+                <div class="well well-sm">
+                    <b>Legenda: </b>
+                    <span><i class="fa fa-circle text-info" aria-hidden="true"></i> Liberação</span>&nbsp;
+                    <span><i class="fa fa-circle text-warning" aria-hidden="true"></i> Análise</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

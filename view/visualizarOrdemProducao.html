@@ -1,0 +1,375 @@
+<div class="container visualizar_ordem_producao">
+    <div class="well maquina-atalho-{classe-maquina}">
+        <div class='page-header'>
+            <div class='btn-toolbar pull-right'>
+                <div class='btn-group'>
+                    <a href="areaTrabalho.php?maquina={idtipoMaquina}&idmaquina={idmaquina}">
+                        <button type="button" class="btn btn-default btn-block btn-lg">
+                            <i class="fa fa-arrow-left"></i> <span class="visible-md-inline visible-lg-inline">Voltar para área de trabalho</span>
+                        </button>
+                    </a>
+                </div>
+            </div>
+            <h2>
+                <span>{tipoMaquina} {maquina}</span>
+            </h2>
+        </div>
+    </div>
+    <div class="panel panel-default dados-gerais">
+        <div class="panel-heading panel-heading-pai">
+            <h3 class="panel-title">OP {numero} - {nome-cliente}</h3>
+            <span class="pull-right clickable"><i class="fa fa-chevron-circle-up fa-2x pl-xxs"></i></span>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Item:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{item}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Formato:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{medidas}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Largura do balão:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{larguraBalao} cm</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Peso extrusão:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{pesoExtrusao} Kg</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Termo encolhível:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{termoencolhivel}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Impresso:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{Impresso}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Solda:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{soldaLateral}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Qualidade tolerância:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{toleranciaQualidade}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Sanfona:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{sanfona}</div>
+            </div>
+            <div class="row">
+                <div class="col-xs-5 col-sm-3">
+                    <b>Gofrado:</b>
+                </div>
+                <div class="col-xs-7 col-sm-9">{gofrado}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- INCLUDE BLOCK : bloco-acompanhamento-->
+
+    <!-- INCLUDE BLOCK : bloco-presetup-->
+
+    <div class="panel panel-default">
+        <div class="panel-heading panel-heading-pai">
+            <h3 class="panel-title">Matéria-prima prevista</h3>
+            <span class="pull-right clickable"><i class="fa fa-chevron-circle-up fa-2x pl-xxs"></i></span>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table materia-prima">
+                    <thead>
+                    <td><b>Matéria-prima</b></td><td><b>Quantidade</b></td>
+                    </thead>
+                    <tbody>
+                    <!-- START BLOCK : lista-materia-prima -->
+                    <tr>
+                        <td>{materiaPrima}</td><td>{quantidade} Kg</td>
+                    </tr>
+                    <!-- END BLOCK : lista-materia-prima -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading panel-heading-pai">
+            <h3 class="panel-title">Bobinas pesadas</h3>
+            <span class="pull-right clickable"><i class="fa fa-chevron-circle-up fa-2x pl-xxs"></i></span>
+        </div>
+        <div class="panel-body">
+            <div class="table-responsive">
+                <table class="table bobinas-pesadas">
+                    <thead>
+                    <td><b>Número</b></td><td><b>Peso</b></td><td><b>Operador</b></td><td><b>Extrusora</b></td><td><b>Data</b></td><td><b>Hora</b></td>
+                    </thead>
+                    <tbody>
+                    <!-- START BLOCK : lista-bobinas-pesadas -->
+                    <tr>
+                        <td>{numero-bobina}</td><td>{peso} Kg</td><td>{operador}</td><td>{extrusora}</td><td>{data}</td><td>{hora}</td>
+                    </tr>
+                    <!-- END BLOCK : lista-bobinas-pesadas -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="modalCadastrarExtrusoraPresetup" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Extrusora {maquina} - Pré-setup</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarExtrusoraPresetup -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarExtrusoraSetup" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Extrusora {maquina} - Setup</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarExtrusoraSetup -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarExtrusoraAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Extrusora {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarExtrusoraAnalise -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalVisualizarExtrusoraSetup" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Extrusora {maquina} - Setup</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : visualizarExtrusoraSetup -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalVisualizarExtrusoraAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Extrusora {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : visualizarExtrusoraAnalise -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarCorteLiberacao" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Corte/Solda {maquina} - Liberação</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarCorteLiberacao -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarCorteAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Corte/Solda {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarCorteAnalise -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalVisualizarCorteLiberacao" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Corte/Solda {maquina} - Liberação</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : visualizarCorteLiberacao -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalVisualizarCorteAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Corte/Solda {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : visualizarCorteAnalise -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarRefileLiberacao" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Refile {maquina} - Liberação</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarRefileLiberacao -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarRefileAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Refile {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarRefileAnalise -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalVisualizarRefileLiberacao" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Refile {maquina} - Liberação</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : visualizarRefileLiberacao -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalVisualizarRefileAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Refile {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : visualizarRefileAnalise -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarImpressoraLiberacao" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Impressora {maquina} - Liberação</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarImpressoraLiberacao -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarImpressoraAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Impressora {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarImpressoraAnalise -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalVisualizarImpressoraLiberacao" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Impressora {maquina} - Liberação</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : visualizarImpressoraLiberacao -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalVisualizarImpressoraAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Impressora {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : visualizarImpressoraAnalise -->
+            </div>
+        </div>
+    </div>
+</div>

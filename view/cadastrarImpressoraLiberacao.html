@@ -1,0 +1,242 @@
+<script>
+    function cadastarImpressoraLiberacaoNao(){
+        bootbox.confirm({
+            message: "Confirma que não ocorreu a vistoria do analista?",
+            title: "Confirmação",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: 'Sim',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'Não',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    cadastarImpressoraLiberacao(1);
+                    $('#formImpressoraLiberacao').submit();
+                }
+            }
+        });
+    }
+
+    function cadastarImpressoraLiberacao(vistoria) {
+        if (vistoria) {
+            $('#bobina, #analiseVisual, #tonalidade, #conferenciaArte, #ladoTratamento, #larguraEmbalagem, #passoEmbalagem, #leituraCodigoBarras, #testeAderenciaTinta, #sentidoDesbobinamento, #operador').prop("disabled", true);
+        }
+        $('#formImpressoraLiberacao').validate({
+            rules: {
+                bobina: {required: true},
+                analiseVisual: {required: true},
+                tonalidade: {required: true},
+                conferenciaArte : {required: true},
+                ladoTratamento : {required: true},
+                larguraEmbalagem : {required: true},
+                passoEmbalagem : {required: false},
+                leituraCodigoBarras : {required: false},
+                testeAderenciaTinta : {required: true},
+                sentidoDesbobinamento : {required: true},
+                operador: {required: true},
+                observacaoTexto: {required: false}
+            },
+            messages: {
+                bobina: {required: 'Informe a bobina'},
+                analiseVisual: {required: 'Informe a análise visual'},
+                tonalidade: {required: 'Informe a tonalidade'},
+                conferenciaArte : {required: 'Informe a conferência da arte:'},
+                ladoTratamento : {required: 'Informe o lado tratamento:'},
+                larguraEmbalagem : {required: 'Informe a largura da embalagem'},
+                passoEmbalagem : {required: 'Informe o passo da embalagem:'},
+                leituraCodigoBarras : {required: 'Informe a leitura código de barras:'},
+                testeAderenciaTinta : {required: 'Informe o teste de aderência de tinta:'},
+                sentidoDesbobinamento : {required: 'Informe o sentido do desbobinamento:'},
+                operador: {required: 'Informe o operador'},
+                observacaoTexto: {required: ''}
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    url: '../ajax/salvarImpressoraLiberacao.php',
+                    type: 'post',
+                    data: {
+                        idordemProducao: $('#formImpressoraLiberacao #carregar-idordemProducao').val(),
+                        idmaquina: $('#formImpressoraLiberacao #carregar-idmaquina').val(),
+                        semVistoria     : vistoria
+                    },
+                    beforeSubmit: function () {
+
+                        if(!verificaSelectNegativo('#formImpressoraLiberacao') && verificaObservacaoTexto('#formImpressoraLiberacao')){
+                            _alert(2, 'Você deve preencher o campo de observação', false, false);
+                            return false;
+                        }
+
+                        if (!vistoria) {
+                            $('#formImpressoraLiberacao .btn-success').attr('disabled', true);
+                            $('#formImpressoraLiberacao .btn-success').button('loading');
+                        } else {
+                            $('#formImpressoraLiberacao .btn-danger').attr('disabled', true);
+                            $('#formImpressoraLiberacao .btn-danger').button('loading');
+                        }
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        (data.status ? _alert(1, data.msg, form, true) : _alert(2, data.msg, false, false));
+                        $('#formImpressoraLiberacao .btn-success, #formImpressoraLiberacao .btn-danger').attr('disabled', false);
+                        $('#formImpressoraLiberacao .btn-success, #formImpressoraLiberacao .btn-danger').button('reset');
+                    }
+                });
+            }
+        });
+    }
+
+</script>
+
+<form action="../ajax/salvarImpressoraLiberacao.php" id="formImpressoraLiberacao" name="formImpressoraLiberacao" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="carregar-idordemProducao" name="carregar-idordemProducao" value=""/>
+    <input type="hidden" id="carregar-idmaquina" name="carregar-idmaquina" value=""/>
+    <input type="hidden" id="idimpressoraLiberacao" name="idimpressoraLiberacao" value=""/>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-info carregar-cliente"></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <div class="alert alert-info alert-bobina-nao_analisada">
+                        <label><input type="checkbox" value="1" id="reinspecao" name="reinspecao"> Reinspeção</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="bobina">Bobina:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="bobinaValorOutro" name="bobinaValorOutro" disabled style="display: none;" readonly>
+                        <select class="form-control selectpicker" id="bobina" name="bobina" title="">
+                        </select>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" onclick="carregarObservacoesBobina();">
+                                <i class="fa fa-table"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="analiseVisual">Análise visual:</label>
+                    <select class="form-control selectpicker" id="analiseVisual" name="analiseVisual" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="tonalidade">Tonalidade:</label>
+                    <select class="form-control selectpicker" id="tonalidade" name="tonalidade" title="">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="conferenciaArte">Conferência da arte:</label>
+                    <select class="form-control selectpicker" id="conferenciaArte" name="conferenciaArte" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="ladoTratamento">Lado tratamento:</label>
+                    <select class="form-control selectpicker" id="ladoTratamento" name="ladoTratamento" title="">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="larguraEmbalagem">Largura da embalagem:</label>
+                    <input type="tel" class="form-control campo-mascara-largura" id="larguraEmbalagem" name="larguraEmbalagem" placeholder="Largura da embalagem">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="passoEmbalagem">Passo da embalagem:</label>
+                    <input type="tel" class="form-control campo-mascara-largura" id="passoEmbalagem" name="passoEmbalagem" placeholder="Passo da embalagem">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="leituraCodigoBarras">Leitura código de barras:</label>
+                    <select class="form-control selectpicker" id="leituraCodigoBarras" name="leituraCodigoBarras" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="testeAderenciaTinta">Teste de aderência de tinta:</label>
+                    <select class="form-control selectpicker" id="testeAderenciaTinta" name="testeAderenciaTinta" title="">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="sentidoDesbobinamento">Sentido do desbobinamento:</label>
+                    <select class="form-control selectpicker" id="sentidoDesbobinamento" name="sentidoDesbobinamento" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="operador">Operador:</label>
+                    <select class="form-control selectpicker" id="operador" name="operador" title="">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="observacao">Observação:</label>
+                    <select class="form-control selectpicker" multiple id="observacao" name="observacao[]" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" id="observacaoTexto" name="observacaoTexto">Aut:
+Rep:</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <button type="submit" id="salvarSetup" class="btn btn-block btn-lg btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando" onclick="cadastarImpressoraLiberacao(0);">
+                        Incluir liberação
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-danger btn-block" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando" onclick="cadastarImpressoraLiberacaoNao();">
+                    Não ocorreu vistoria do analista
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,157 @@
+body {
+    padding-top: 28px;
+}
+.modal {
+    overflow: auto !important;
+}
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+.vcenter {
+    margin:10px auto;
+}
+.clickable{
+    cursor: pointer;
+}
+.panel-heading span {
+    margin-top: -22px;
+}
+.btn-label {
+    position: relative;
+    left: -12px;
+    display: inline-block;
+    padding: 6px 12px;
+    background: rgba(0,0,0,0.15);
+    border-radius: 3px 0 0 3px;
+}
+.btn-labeled {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+.badgebox {
+    opacity: 0;
+}
+.badgebox + .badge {
+    text-indent: -999999px;
+    width: 27px;
+}
+.badgebox:focus + .badge {
+    box-shadow: inset 0px 0px 5px;
+}
+.badgebox:checked + .badge {
+    text-indent: 0;
+}
+.aligncorrect{
+    padding-top:6px;
+}
+.erros li label{
+    font-size: 1.2rem;
+    font-weight: normal;
+}
+.badge-quantidade{
+    position: relative;
+    top: 0 !important;
+    right: 0 !important;
+    background-color: #b94a48 !important;
+    color: #FFF !important;
+    font-size: 1rem !important;
+    border-radius: 10px !important;
+}
+.navbar-header span:hover{
+    color: #9d9d9d !important;
+}
+.planta_fabrica .nav-pills li a:hover{
+    background-color: #BBB;
+    color: #FFF;
+}
+.planta_fabrica .tab-content div div div a div{
+    color: #FFF;
+}
+.area_trabalho .well, .visualizar_ordem_producao .well{
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+.panel-default>.panel-heading{
+    background-color: #DDD;
+}
+.cabecalhoAvisoOp{
+    background-color: #ffab91 !important;
+}
+
+.panel-default>.panel-heading .panel-title{
+    font-size: 14px !important;
+}
+.bootstrap-select div ul li a span{
+    /*espaçamento entre os options do select*/
+    padding: 5px 0;
+}
+#formExtrusoraPresetup > div > div.formExtrusoraPresetup > div:nth-child(1) > div:nth-child(1) > div > div > div > ul > li.selected
+/*codigo específico*/
+.area_trabalho .page-header, .visualizar_ordem_producao .page-header{
+    margin: 20px 0 20px;
+}
+.area_trabalho .page-header button, .visualizar_ordem_producao .page-header button{
+    margin-top: -10px;
+}
+.area_trabalho .titulo-maquina-1, .consultar_registro .maquina-1, .maquina-atalho-1{ /*extrusora*/
+    background-color: #FFAB91;
+    border: none;
+}
+.area_trabalho .titulo-maquina-2, .consultar_registro .maquina-2, .maquina-atalho-2{ /*corte e solda*/
+    background-color: #D4E157;
+    border: none;
+}
+.area_trabalho .titulo-maquina-3, .consultar_registro .maquina-3, .maquina-atalho-3{ /*refile*/
+    background-color: #FFC107;
+    border: none;
+}
+.area_trabalho .titulo-maquina-4, .consultar_registro .maquina-4, .maquina-atalho-4{ /*refile*/
+    background-color: #bcaaa4;
+    border: none;
+}
+.maquina-atalho-1:hover{
+    background-color: #FF8A65;
+}
+.maquina-atalho-2:hover{
+    background-color: #CDDC39;
+}
+.maquina-atalho-3:hover{
+    background-color: #FFB300;
+}
+.maquina-atalho-4:hover{
+    background-color: #a1887f;
+}
+
+.area_trabalho h2 span a i{
+    font-size: 20px;
+}
+.consultar_registro table h3 .nomeCliente{
+    font-size: .8em;
+}
+.consultar_registro table .descricaoItem{
+   font-style: italic;
+}
+.consultar_registro table .acoes{
+    vertical-align: middle;
+}
+.plantaFabricaAtalho div div div div div a .well{
+    color: #FFF;
+}
+.alert-bobina-nao_analisada{
+    padding: 5px 0 4px 10px;
+}
+.alert-bobina-nao_analisada label {
+    display: inline-block;
+}
+.alert-bobina-nao_analisada input {
+    vertical-align: center;
+    position: relative;
+    top: 1px;
+    overflow: hidden;
+    margin-right:5px;
+}
+.maquina-delay{
+    background-color: #DDD !important;
+    color: #FFF !important;
+}

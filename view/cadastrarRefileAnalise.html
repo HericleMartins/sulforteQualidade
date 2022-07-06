@@ -1,0 +1,198 @@
+<script>
+    $(function() {
+        $('#formRefileAnalise').validate({
+            rules: {
+                bobina: {required: true},
+                largura: {required: true},
+                comprimento: {required: false},
+                qualidadePicote : {required: false},
+                qualidadeNovaBobina : {required: true},
+                qualidadeImpressao : {required: false},
+                operador: {required: true},
+                observacaoTexto: {required: false}
+            },
+            messages: {
+                bobina: {required: 'Informe a bobina'},
+                largura: {required: 'Informe a largura'},
+                comprimento: {required: 'Informe o comprimento'},
+                qualidadePicote : {required: 'Informe a qualidade do picote'},
+                qualidadeNovaBobina : {required: 'Informe a qualidade da nova bobina'},
+                qualidadeImpressao : {required: 'Informe a qualidade da impressão'},
+                operador: {required: 'Informe o operador'},
+                observacaoTexto: {required: ''}
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    url: '../ajax/salvarRefileAnalise.php',
+                    type: 'post',
+                    data: {
+                        idordemProducao: $('#formRefileAnalise #carregar-idordemProducao').val(),
+                        idmaquina: $('#formRefileAnalise #carregar-idmaquina').val()
+                    },
+                    beforeSubmit: function () {
+
+                        if(!verificaSelectNegativo('#formRefileAnalise') && verificaObservacaoTexto('#formRefileAnalise')){
+                            _alert(2, 'Você deve preencher o campo de observação', false, false);
+                            return false;
+                        }
+
+                        $('#formRefileAnalise .btn-success').attr('disabled', true);
+                        $('#formRefileAnalise .btn-success').button('loading');
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        (data.status ? _alert(1, data.msg, form, true) : _alert(2, data.msg, false, false));
+                        $('#formRefileAnalise .btn-success').attr('disabled', false);
+                        $('#formRefileAnalise .btn-success').button('reset');
+                    }
+                });
+            }
+        });
+
+        $('#refileAnalise-outra-bobina').on('click',function() {
+            if ($(this).prop('checked')) {
+                $('#formRefileAnalise #bobina').selectpicker('hide');
+                $('#formRefileAnalise #bobinaValorOutro').prop('disabled', false).val('999').show();
+            } else {
+                $('#formRefileAnalise #bobina').selectpicker('show');
+                $('#formRefileAnalise #bobinaValorOutro').prop('disabled', true).val('').hide();
+            }
+        });
+
+        $('#formRefileAnalise #semAnalise').click(function(){
+            semAnaliseRefile('#formRefileAnalise');
+        });
+
+        $('#formRefileAnalise #reinspecao').click(function(){
+            if($('#formRefileAnalise #reinspecao:checkbox:checked').length > 0){
+                $('#formRefileAnalise #semAnalise').prop('checked', false).prop('disabled', true);
+            } else {
+                $('#formRefileAnalise #semAnalise').prop('disabled', false);
+            }
+            semAnaliseCorte('#formRefileAnalise');
+        });
+
+    });
+</script>
+<form action="../ajax/salvarRefileAnalise.php" id="formRefileAnalise" name="formRefileAnalise" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="carregar-idordemProducao" name="carregar-idordemProducao" value=""/>
+    <input type="hidden" id="carregar-idmaquina" name="carregar-idmaquina" value=""/>
+    <input type="hidden" id="idrefileAnalise" name="idrefileAnalise" value=""/>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-info carregar-cliente"></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <div class="alert alert-danger alert-bobina-nao_analisada">
+                        <label><input type="checkbox" value="1" id="semAnalise" name="semAnalise"> Bobina não analisada</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <div class="alert alert-info alert-bobina-nao_analisada">
+                        <label><input type="checkbox" value="1" id="reinspecao" name="reinspecao"> Reinspeção</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="bobina">Bobina:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="bobinaValorOutro" name="bobinaValorOutro" disabled style="display: none;" readonly>
+                        <select class="form-control selectpicker" id="bobina" name="bobina" title="">
+                        </select>
+                        <div class="pull-right mt-xxs refileAnalise-outra-bobina" style="display: none;">
+                            <label><input type="checkbox" value="1" id="refileAnalise-outra-bobina"> Bobina de estoque</label>
+                        </div>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" onclick="carregarObservacoesBobina();">
+                                <i class="fa fa-table"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="largura">Largura:</label>
+                    <input type="tel" class="form-control" id="largura" name="largura" placeholder="Largura">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="comprimento">Comprimento:</label>
+                    <input type="tel" class="form-control" id="comprimento" name="comprimento" placeholder="Comprimento">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="qualidadeNovaBobina">Qualidade da nova bobina:</label>
+                    <select class="form-control selectpicker" id="qualidadeNovaBobina" name="qualidadeNovaBobina" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="qualidadePicote">Qualidade do picote:</label>
+                    <select class="form-control selectpicker" id="qualidadePicote" name="qualidadePicote" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="qualidadeImpressao">Qualidade da impressão:</label>
+                    <select class="form-control selectpicker" id="qualidadeImpressao" name="qualidadeImpressao" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="operador">Operador:</label>
+                    <select class="form-control selectpicker" id="operador" name="operador" title="">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="observacao">Observação:</label>
+                    <select class="form-control selectpicker" multiple id="observacao" name="observacao[]" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" id="observacaoTexto" name="observacaoTexto">Aut:
+Rep:</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <button type="submit" id="salvarAnalise" class="btn btn-block btn-lg btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando">
+                        Incluir análise
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

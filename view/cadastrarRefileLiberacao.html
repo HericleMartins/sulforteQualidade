@@ -1,0 +1,219 @@
+<script>
+    function cadastarRefileLiberacaoNao(){
+        bootbox.confirm({
+            message: "Confirma que não ocorreu a vistoria do analista?",
+            title: "Confirmação",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: 'Sim',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'Não',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    cadastarRefileLiberacao(1);
+                    $('#formRefileLiberacao').submit();
+                }
+            }
+        });
+    }
+
+    function cadastarRefileLiberacao(vistoria) {
+        if (vistoria) {
+            $('#bobina, #largura, #comprimento, #qualidadePicote, #qualidadeNovaBobina, #qualidadeImpressao, #operador').prop("disabled", true);
+        }
+        $('#formRefileLiberacao').validate({
+            rules: {
+                bobina: {required: true},
+                largura: {required: true},
+                comprimento: {required: false},
+                qualidadePicote : {required: false},
+                qualidadeNovaBobina : {required: true},
+                qualidadeImpressao : {required: false},
+                operador: {required: true},
+                observacaoTexto: {required: false}
+            },
+            messages: {
+                bobina: {required: 'Informe a bobina'},
+                largura: {required: 'Informe a largura'},
+                comprimento: {required: 'Informe o comprimento'},
+                qualidadePicote : {required: 'Informe a qualidade do picote'},
+                qualidadeNovaBobina : {required: 'Informe a qualidade da nova bobina'},
+                qualidadeImpressao : {required: 'Informe a qualidade da impressão'},
+                operador: {required: 'Informe o operador'},
+                observacaoTexto: {required: ''}
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    url: '../ajax/salvarRefileLiberacao.php',
+                    type: 'post',
+                    data: {
+                        idordemProducao: $('#formRefileLiberacao #carregar-idordemProducao').val(),
+                        idmaquina: $('#formRefileLiberacao #carregar-idmaquina').val(),
+                        semVistoria     : vistoria
+                    },
+                    beforeSubmit: function () {
+
+                        if(!verificaSelectNegativo('#formRefileLiberacao') && verificaObservacaoTexto('#formRefileLiberacao') && !vistoria){
+                            _alert(2, 'Você deve preencher o campo de observação', false, false);
+                            return false;
+                        }
+
+                        if (!vistoria) {
+                            $('#formRefileLiberacao .btn-success').attr('disabled', true);
+                            $('#formRefileLiberacao .btn-success').button('loading');
+                        } else {
+                            $('#formRefileLiberacao .btn-danger').attr('disabled', true);
+                            $('#formRefileLiberacao .btn-danger').button('loading');
+                        }
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        (data.status ? _alert(1, data.msg, form, true) : _alert(2, data.msg, false, false));
+                        $('#formRefileLiberacao .btn-success, #formRefileLiberacao .btn-danger').attr('disabled', false);
+                        $('#formRefileLiberacao .btn-success, #formRefileLiberacao .btn-danger').button('reset');
+                    }
+                });
+            }
+        });
+    }
+
+    $(function() {
+        $('#refile-outra-bobina').on('click',function() {
+            if ($(this).prop('checked')) {
+                $('#formRefileLiberacao #bobina').selectpicker('hide');
+                $('#formRefileLiberacao #bobinaValorOutro').prop('disabled', false).val('999').show();
+            } else {
+                $('#formRefileLiberacao #bobina').selectpicker('show');
+                $('#formRefileLiberacao #bobinaValorOutro').prop('disabled', true).val('').hide();
+            }
+        });
+    });
+</script>
+<form action="../ajax/salvarRefileLiberacao.php" id="formRefileLiberacao" name="formRefileLiberacao" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="carregar-idordemProducao" name="carregar-idordemProducao" value=""/>
+    <input type="hidden" id="carregar-idmaquina" name="carregar-idmaquina" value=""/>
+    <input type="hidden" id="idrefileLiberacao" name="idrefileLiberacao" value=""/>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-info carregar-cliente"></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <div class="alert alert-info alert-bobina-nao_analisada">
+                        <label><input type="checkbox" value="1" id="reinspecao" name="reinspecao"> Reinspeção</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="bobina">Bobina:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="bobinaValorOutro" name="bobinaValorOutro" disabled style="display: none;" readonly>
+                        <select class="form-control selectpicker" id="bobina" name="bobina" title="">
+                        </select>
+                        <div class="pull-right mt-xxs refile-outra-bobina" style="display: none;">
+                            <label><input type="checkbox" value="1" id="refile-outra-bobina"> Bobina de estoque</label>
+                        </div>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" onclick="carregarObservacoesBobina();">
+                                <i class="fa fa-table"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="largura">Largura:</label>
+                    <input type="tel" class="form-control" id="largura" name="largura" placeholder="Largura">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="comprimento">Comprimento:</label>
+                    <input type="tel" class="form-control" id="comprimento" name="comprimento" placeholder="Comprimento">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="qualidadeNovaBobina">Qualidade da nova bobina:</label>
+                    <select class="form-control selectpicker" id="qualidadeNovaBobina" name="qualidadeNovaBobina" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="qualidadePicote">Qualidade do picote:</label>
+                    <select class="form-control selectpicker" id="qualidadePicote" name="qualidadePicote" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="qualidadeImpressao">Qualidade da impressão:</label>
+                    <select class="form-control selectpicker" id="qualidadeImpressao" name="qualidadeImpressao" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="operador">Operador:</label>
+                    <select class="form-control selectpicker" id="operador" name="operador" title="">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="observacao">Observação:</label>
+                    <select class="form-control selectpicker" multiple id="observacao" name="observacao[]" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" id="observacaoTexto" name="observacaoTexto">Aut:
+Rep:</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <button type="submit" id="salvarSetup" class="btn btn-block btn-lg btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando" onclick="cadastarRefileLiberacao(0);">
+                        Incluir liberação
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-danger btn-block" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando" onclick="cadastarRefileLiberacaoNao();">
+                    Não ocorreu vistoria do analista
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

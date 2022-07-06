@@ -1,0 +1,253 @@
+<script>
+    function cadastarCorteSetupNao(){
+        bootbox.confirm({
+            message: "Confirma que não ocorreu a vistoria do analista?",
+            title: "Confirmação",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: 'Sim',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'Não',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result) {
+                    cadastarCorteSetup(1);
+                    $('#formCorteSetup').submit();
+                }
+            }
+        });
+
+    }
+
+    function cadastarCorteSetup(vistoria) {
+        if (vistoria) {
+            $('#bobina, #largura, #comprimento, #qualidadeSolda, #qualidadeSacaria, #codigoFaca, #sanfonaEsq, #sanfonaDir, #qualidadeImpressao, #operador, #pista').prop("disabled", true);
+        }
+        $('#formCorteSetup').validate({
+            rules: {
+                bobina: {required: true},
+                pista: {required: true},
+                largura: {required: true},
+                comprimento: {required: true},
+                sanfonaEsq: {required: true},
+                sanfonaDir: {required: true},
+                qualidadeSacaria : {required: true},
+                codigoFaca : {required: false},
+                operador: {required: true},
+                observacaoTexto: {required: false}
+            },
+            messages: {
+                bobina: {required: 'Informe a bobina'},
+                pista: {required: 'Informe a pista'},
+                largura: {required: 'Informe a largura'},
+                comprimento: {required: 'Informe o comprimento'},
+                sanfonaEsq: {required: 'Informe a sanfona esquerda'},
+                sanfonaDir: {required: 'Informe a sanfona direita'},
+                qualidadeSacaria : {required: 'Informe a qualidade da sacaria'},
+                codigoFaca : {required: 'Informe o código da faca'},
+                operador: {required: 'Informe o operador'},
+                observacaoTexto: {required: ''}
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    url: '../ajax/salvarCorteSetup.php',
+                    type: 'post',
+                    data: {
+                        idordemProducao: $('#formCorteSetup #carregar-idordemProducao').val(),
+                        idmaquina: $('#formCorteSetup #carregar-idmaquina').val(),
+                        semVistoria     : vistoria
+                    },
+                    beforeSubmit: function () {
+
+                        if(!verificaSelectNegativo('#formCorteSetup') && verificaObservacaoTexto('#formCorteSetup') && !vistoria){
+                            _alert(2, 'Você deve preencher o campo de observação', false, false);
+                            return false;
+                        }
+
+                        if (!vistoria) {
+                            $('#formCorteSetup .btn-success').attr('disabled', true);
+                            $('#formCorteSetup .btn-success').button('loading');
+                        } else {
+                            $('#formCorteSetup .btn-danger').attr('disabled', true);
+                            $('#formCorteSetup .btn-danger').button('loading');
+                        }
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        (data.status ? _alert(1, data.msg, form, true) : _alert(2, data.msg, false, false));
+                        $('#formCorteSetup .btn-success, #formCorteSetup .btn-danger').attr('disabled', false);
+                        $('#formCorteSetup .btn-success, #formCorteSetup .btn-danger').button('reset');
+                    }
+                });
+            }
+        });
+    }
+
+    $(function() {
+        $('#corte-outra-bobina').on('click',function() {
+            if ($(this).prop('checked')) {
+                $('#formCorteSetup #bobina').selectpicker('hide');
+                $('#formCorteSetup #bobinaValorOutro').prop('disabled', false).val('999').show();
+            } else {
+                $('#formCorteSetup #bobina').selectpicker('show');
+                $('#formCorteSetup #bobinaValorOutro').prop('disabled', true).val('').hide();
+            }
+        });
+    });
+</script>
+<form action="../ajax/salvarCorteSetup.php" id="formCorteSetup" name="formCorteSetup" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="carregar-idordemProducao" name="carregar-idordemProducao" value=""/>
+    <input type="hidden" id="carregar-idmaquina" name="carregar-idmaquina" value=""/>
+    <input type="hidden" id="idcorteLiberacao" name="idcorteLiberacao" value=""/>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-info carregar-cliente"></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <div class="alert alert-info alert-bobina-nao_analisada">
+                        <label><input type="checkbox" value="1" id="reinspecao" name="reinspecao"> Reinspeção</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="bobina">Bobina:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="bobinaValorOutro" name="bobinaValorOutro" disabled style="display: none;" readonly>
+                        <select class="form-control selectpicker" id="bobina" name="bobina" title="">
+                        </select>
+                        <div class="pull-right mt-xxs corte-outra-bobina" style="display: none;">
+                            <label><input type="checkbox" value="1" id="corte-outra-bobina"> Bobina de estoque</label>
+                        </div>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="button" onclick="carregarObservacoesBobina();">
+                                <i class="fa fa-table"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="pista">Pista:</label>
+                    <select class="form-control selectpicker" id="pista" name="pista" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="largura">Largura:</label>
+                    <input type="tel" class="form-control campo-mascara-largura" id="largura" name="largura" placeholder="Largura">
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="comprimento">Comprimento:</label>
+                    <input type="tel" class="form-control campo-mascara-comprimento" id="comprimento" name="comprimento" placeholder="Comprimento">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="sanfonaEsq" id="labelSanfona">Sanfona:</label>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input type="tel" class="form-control campo-mascara-sanfona" id="sanfonaEsq" name="sanfonaEsq" placeholder="esq">
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="tel" class="form-control campo-mascara-sanfona" id="sanfonaDir" name="sanfonaDir" placeholder="dir">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="qualidadeSolda">Qualidade da solda:</label>
+                    <select class="form-control selectpicker" id="qualidadeSolda" name="qualidadeSolda" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="qualidadeSacaria">Qualidade da sacaria:</label>
+                    <select class="form-control selectpicker" id="qualidadeSacaria" name="qualidadeSacaria" title="">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="codigoFaca">Código da faca:</label>
+                    <select class="form-control selectpicker" id="codigoFaca" name="codigoFaca" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="qualidadeImpressao">Qualidade da impressão:</label>
+                    <select class="form-control selectpicker" id="qualidadeImpressao" name="qualidadeImpressao" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="operador">Operador:</label>
+                    <select class="form-control selectpicker" id="operador" name="operador" title="">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="observacao">Observação:</label>
+                    <select class="form-control selectpicker" multiple id="observacao" name="observacao[]" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" id="observacaoTexto" name="observacaoTexto">Aut:
+Rep:</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <button type="submit" id="salvarSetup" class="btn btn-block btn-lg btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando" onclick="cadastarCorteSetup(0);">
+                        Incluir liberação
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-danger btn-block" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando" onclick="cadastarCorteSetupNao();">
+                    Não ocorreu vistoria do analista
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

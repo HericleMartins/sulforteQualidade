@@ -1,0 +1,1 @@
+C:\GnuWin32\bin\wget.exe http://localhost:8080/sulforte/rotina/importarOrdemProducao.php -q -r

@@ -1,0 +1,34 @@
+<div class="panel panel-default presetup">
+    <div class="panel-heading panel-heading-pai">
+        <h3 class="panel-title">Pré-setup extrusora</h3>
+        <span class="pull-right clickable"><i class="fa fa-chevron-circle-up fa-2x pl-xxs"></i></span>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="table-responsive">
+                    <table class="table materia-prima">
+                        <thead>
+                            <td width="15%"><b>Data - Hora</b></td>
+                            <td width="41%"><b>Detalhe</b></td>
+                            <td width="15%"><b>Observação</b></td>
+                            <td width="15%"><b>Analista</b></td>
+                            <td width="14%" align="center"><b>Ações</b></td>
+                        </thead>
+                        <tbody>
+                        <!-- START BLOCK : lista-presetup -->
+                        <tr>
+                            <td>{data} - {hora}</td><td>{detalhe}</td><td>{observacao}</td><td>{analista}</td>
+                            <td align="center">
+                                <button type="button" {permissao-editar} class="btn btn-success m-top-xs-5" title="Editar" onclick="editarDetalhe({id}, {tipo}, {idordemProducao}, {idmaquina})"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button type="button" {permissao-remover} class="btn btn-danger m-top-xs-5" title="Excluir" onclick="removerExtrusoraPresetup({id})"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>
+                        <!-- END BLOCK : lista-presetup -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

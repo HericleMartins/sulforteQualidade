@@ -1,0 +1,81 @@
+<script>
+    $(function() {
+        $('#formularioMeuUsuario').validate({
+            rules: {
+                usuario: {required: true}
+            },
+            messages: {
+                usuario: {required: 'Informe o nome.'}
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    url: '../ajax/salvarMeuUsuario.php',
+                    type: 'post',
+                    beforeSubmit: function () {
+                        $('#formularioMeuUsuario .btn-success').attr('disabled', true);
+                        $('#formularioMeuUsuario .btn-success').button('loading');
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        (data.status ? _alert(1, data.msg, form, false) : _alert(2, data.msg, false, false));
+                        $('#formularioMeuUsuario .btn-success').attr('disabled', false);
+                        $('#formularioMeuUsuario .btn-success').button('reset');
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+<div class="container gerenciar_meu-usuario">
+    <form name="formularioMeuUsuario" id="formularioMeuUsuario" method="post" action="">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="usuario">Nome do usuário:</label>
+                    <input type="text" class="form-control" id="usuario" name="usuario" value="{usuario}">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="text" class="form-control" id="email" name="email" value="{email}" disabled>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group senha">
+                    <label for="senhaAtual" class="control-label">Senha atual:</label>
+                    <input type="password" class="form-control" name="senhaAtual" id="senhaAtual" placeholder="">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group senha">
+                    <label for="novaSenha" class="control-label">Nova senha:</label>
+                    <input type="password" class="form-control" name="novaSenha" id="novaSenha" placeholder="" >
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group senha">
+                    <label for="senhaConfirma" class="control-label">Confirmar nova senha:</label>
+                    <input type="password" class="form-control" name="senhaConfirma" id="senhaConfirma" placeholder="" >
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-warning msg-alterar-senha">
+            <strong>Aviso!</strong> Caso não queira modificar a senha deixe os campos <strong>Nova senha</strong> e <strong>Confirmar nova senha</strong> em branco.
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-success btn-block btn-lg" title="Adicionar" id="cadastrar" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando">
+                    Salvar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

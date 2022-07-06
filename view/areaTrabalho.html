@@ -1,0 +1,243 @@
+<script>
+    $(function() {
+
+        $('#modalCadastrarOrdemProducao').on('shown.bs.modal', function () {
+            $('#numeroOrdemProducao').trigger('focus');
+        })
+
+    });
+</script>
+
+<div class="container area_trabalho">
+    <div class="well titulo-maquina-{classe-maquina}">
+        <div class='page-header'>
+            <div class='btn-toolbar pull-right'>
+                <div class='btn-group'>
+                    <button type="button" class="btn btn-default btn-block btn-lg" data-toggle="modal" data-target="#modalCadastrarOrdemProducao">
+                        <i class="fa fa-plus"></i> <span class="visible-md-inline visible-lg-inline">Adicionar OP</span></a>
+                    </button>
+                </div>
+            </div>
+            <h2>
+                <span>{tipoMaquina} {maquina}</span>
+                <span><a href="#" data-toggle="modal" data-target="#modalPlantaFabrica"><i class="fa fa-list-alt" aria-hidden="true" style="color: #FFF;"></i></a></span>
+            </h2>
+        </div>
+    </div>
+
+    <!-- INCLUDE BLOCK : listar-ordem-producao-->
+
+    <!-- START BLOCK : lista-op-nenhum -->
+    <div class="alert alert-danger text-center">Nenhuma ordem de produção ativa para essa máquina.</div>
+    <!-- END BLOCK : lista-op-nenhum -->
+</div>
+
+<div id="modalPlantaFabrica" class="modal fade plantaFabricaAtalho" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Planta da fábrica</h4>
+            </div>
+            <div class="modal-body">
+                <!-- START BLOCK : listar-maquina-atalho -->
+                <h3 class="panel-title mb-xxs">{maquina-atalho}</h3>
+                <div class="row">
+                    <!-- START BLOCK : listar-maquina-atalho-nome -->
+                    <div class="col-xs-3">
+                        <a href="areaTrabalho.php?maquina={idtipoMaquina-atalho}&idmaquina={idmaquina-atalho}" title="{mensagemDelay}">
+                            <div class="well text-center maquina-atalho-{classe-maquina-atalho} {classeDelay}">
+                                {maquina-atalho}
+                                <i class="{iconeDelay}"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- END BLOCK : listar-maquina-atalho-nome -->
+                </div>
+                <!-- END BLOCK : listar-maquina-atalho -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarOrdemProducao" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Ordem de produção</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrar-OP -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarExtrusoraPresetup" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Extrusora {maquina} - Pré-setup</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarExtrusoraPresetup -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarExtrusoraSetup" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Extrusora {maquina} - Setup</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarExtrusoraSetup -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarExtrusoraAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Extrusora {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarExtrusoraAnalise -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarCorteSetup" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Corte/Solda {maquina} - Liberação de produção</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarCorteSetup -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarCorteAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Corte/Solda {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarCorteAnalise-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarRefileLiberacao" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Refile {maquina} - Liberação de produção</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarRefileLiberacao -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarRefileAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Refile {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarRefileAnalise-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarImpressoraLiberacao" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Impressora {maquina} - Liberação de produção</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarImpressoraLiberacao -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCadastrarImpressoraAnalise" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Impressora {maquina} - Análise</h4>
+            </div>
+            <div class="modal-body">
+                <!-- INCLUDE BLOCK : cadastrarImpressoraAnalise -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalCarregarObservacoes" class="modal fade" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Observações da extrusão</h4>
+            </div>
+            <div class="modal-body">
+                <table id="observacaoExtrusora" class="table">
+                    <thead>
+                        <tr>
+                            <th width="50%">Observação</th>
+                            <th width="25%">Data/Hora</th>
+                            <th width="25%">Analista</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                <!--
+                <div class="row">
+                    <div class="col-xs-9 text-left">
+                        <div>
+                            <b>Legenda: </b>
+                            <span><i class="fa fa-circle text-info" aria-hidden="true"></i> Setup</span>&nbsp;
+                            <span><i class="fa fa-circle text-warning" aria-hidden="true"></i> Análise</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-3">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    </div>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>

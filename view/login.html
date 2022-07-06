@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Language" content="pt-br">
+    <title>SULFORTE - Sistema para qualidade</title>
+
+    <link rel="shortcut icon" href="../img/favicon.ico" />
+    <!-- Bootstrap -->
+    <link href="../inc/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../inc/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/spaces.min.css" rel="stylesheet">
+    <link rel="stylesheet/less" type="text/css" href="../css/responsive.less">
+    <link rel="stylesheet/less" type="text/css" href="../css/geral.less">
+    <link href="../css/geral.css" rel="stylesheet">
+    <link href="../css/login.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="../js/html5shiv.min.js"></script>
+    <script src="../js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../inc/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/less.min.js"></script>
+    <script src="../js/jquery.mask.js"></script>
+    <script src="../js/jquery.form.min.js"></script>
+    <script src="../js/jquery.validate.min.js"></script>
+    <script src="../js/additional-methods.min.js"></script>
+    <script src="../js/bootbox.min.js"></script>
+    <script src="../js/funcoes.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            if ('{statusLogin}') {
+                _alert(3,'{texto}', false);
+            }
+        });
+    </script>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 text-center mb-xxs">
+            <img src="../img/logo.jpg" class="img-responsive" width="250px" alt="Logo SULFORTE" style="margin: 0 auto;">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Login</h3>
+                </div>
+                <div class="panel-body">
+                    <form accept-charset="UTF-8" role="form" action="verificarLogin.php" method="post">
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="email@email.com" name="email" type="text">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" placeholder="Senha" name="senha" type="password" value="">
+                            </div>
+                            <input id="btn-login" type="submit" value="Entrar" class="btn btn-success btn-block btn-lg">
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

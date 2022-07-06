@@ -1,0 +1,167 @@
+<form action="" id="formExtrusoraSetup" name="formExtrusoraSetup" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="carregar-idordemProducao" name="carregar-idordemProducao" value=""/>
+    <input type="hidden" id="carregar-idmaquina" name="carregar-idmaquina" value=""/>
+    <input type="hidden" id="idextrusoraSetup" name="idextrusoraSetup" value=""/>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-info carregar-cliente"></h3>
+                <span class="pull-right clickable"><i class="fa fa-chevron-circle-up fa-2x pl-xxs"></i></span>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <b>Item:</b>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 carregar-item"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <b>Medidas:</b>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 carregar-medidas"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <b>Largura do balão:</b>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 carregar-larguraBalao"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <b>Peso extrusora:</b>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 carregar-pesoExtrusao"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row semAnalise">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <div class="alert alert-danger">
+                        <label>Setup sem vistoria do analista</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row comAnalise">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="analise">Análise:</label>
+                    <span id="analise" name="analise"></span>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="largura">Largura:</label>
+                    <span id="largura" name="largura"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row comAnalise">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="espessura">Espessura mán:</label>
+                    <span id="espessura" name="espessura"></span>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="espessuraMax">Espessura míx:</label>
+                    <span id="espessuraMax" name="espessuraMax"></span>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default espessuraPeso comAnalise" style="display: none;">
+            <div class="panel-heading">Espessura <span class="text-info">(Calculada)</span></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="espessuraLargura">Largura:</label>
+                            <span id="espessuraLargura" name="espessuraLargura"></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="espessuraComprimento">Comprimento:</label>
+                            <span id="espessuraComprimento" name="espessuraComprimento"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="espessuraPeso">Peso:</label>
+                            <span id="espessuraPeso" name="espessuraPeso"></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-6">
+                        <div class="form-group">
+                            <label for="espessuraMedia">Média:</label>
+                            <span id="espessuraMedia" name="espessuraMedia"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row comAnalise">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="sanfonaEsq">Sanfona esquerda:</label>
+                    <span id="sanfonaEsq" name="sanfonaEsq"></span>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="sanfonaDir">Sanfona direita:</label>
+                    <span id="sanfonaDir" name="sanfonaDir"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row comAnalise">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="faceamento">Faceamento da bobina:</label>
+                    <span id="faceamento" name="faceamento"></span>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="operador">Operador:</label>
+                    <span id="operador" name="operador"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row comAnalise">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="impressao">Trat. impressão:</label>
+                    <span id="impressao" name="impressao"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="observacaoTexto">Observação:</label>
+                    <span id="observacaoTexto" name="observacaoTexto"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="analista">Analista:</label>
+                    <span id="analista" name="analista"></span>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="dataHora">Data - Hora:</label>
+                    <span id="dataHora" name="dataHora"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

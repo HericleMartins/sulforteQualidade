@@ -1,0 +1,202 @@
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#formOrdemProducao').validate({
+            rules: {
+                numeroOrdemProducao: { required: true, number: true }
+            },
+            messages: {
+                numeroOrdemProducao: { required: 'Insira o número da ordem de produção', number: 'A ordem de produção deve ser um número' }
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    url: '../ajax/salvarOrdemProducaoAreaTrabalho.php',
+                    type: 'post',
+                    async: false,
+                    beforeSubmit: function () {
+                        $('#formOrdemProducao #btn-submit').attr('disabled', true);
+                        $('#formOrdemProducao #btn-submit').button('loading');
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        (data.status ? _alert(1, data.msg, form, true) : _alert(2, data.msg, false, false));
+                        $('#formOrdemProducao #btn-submit').attr('disabled', false);
+                        $('#formOrdemProducao #btn-submit').button('reset');
+                    }
+                });
+            }
+        });
+
+        $("#formOrdemProducao #numeroOrdemProducao").keydown(function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                $("#formOrdemProducao #btn-submit").click();
+            }
+        });
+
+        $("#formOrdemProducao #btn-submit").click(function () {
+            var idMaquina = $('#formOrdemProducao #idtipoMaquina').val();
+            if ( idMaquina == 2) {
+                $.ajax({
+                    type: "POST",
+                    url: '../ajax/verificarPalavraChaveAlertaCS.php',
+                    data: {
+                        numeroOrdemProducao: $('#formOrdemProducao #numeroOrdemProducao').val()
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        if (data.status) {
+                            bootbox.prompt({
+                                title: "<p>Esta OP possui uma possivel restrição para ser adicionada a essa máquina, para continuar confirme sua senha.</p><p><b>Mensagem:</b> " + data.msg + "</p>",
+                                //inputType: 'password',
+                                callback: function (result) {
+                                    if (result) {
+                                        $.post("../ajax/validarSenhaUsuario.php", {
+                                            senha: result
+                                        }, function (r2) {
+                                            var resposta = $.parseJSON(r2);
+                                            if (!resposta.status) {
+                                                _alert(2, resposta.msg, false, false)
+                                            } else {
+                                                $('#formOrdemProducao').submit();
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#formOrdemProducao').submit();
+                        }
+                    }
+                });
+            } else if (idMaquina == 1) {
+                $.ajax({
+                    type: "POST",
+                    url: '../ajax/verificarPalavraChaveAlertaExtrusao.php',
+                    data: {
+                        numeroOrdemProducao: $('#formOrdemProducao #numeroOrdemProducao').val()
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        if (data.status) {
+                            bootbox.prompt({
+                                title: "<p>Esta OP possui uma possivel restrição para ser adicionada a essa máquina, para continuar confirme sua senha.</p><p><b>Mensagem:</b> " + data.msg + "</p>",
+                                //inputType: 'password',
+                                callback: function (result) {
+                                    if (result) {
+                                        $.post("../ajax/validarSenhaUsuario.php", {
+                                            senha: result
+                                        }, function (r2) {
+                                            var resposta = $.parseJSON(r2);
+                                            if (!resposta.status) {
+                                                _alert(2, resposta.msg, false, false)
+                                            } else {
+                                                $('#formOrdemProducao').submit();
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#formOrdemProducao').submit();
+                        }
+                    }
+                });
+            } else if (idMaquina == 3) {
+                $.ajax({
+                    type: "POST",
+                    url: '../ajax/verificarPalavraChaveAlertaRefile.php',
+                    data: {
+                        numeroOrdemProducao: $('#formOrdemProducao #numeroOrdemProducao').val()
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        if (data.status) {
+                            bootbox.prompt({
+                                title: "<p>Esta OP possui uma possivel restrição para ser adicionada a essa máquina, para continuar confirme sua senha.</p><p><b>Mensagem:</b> " + data.msg + "</p>",
+                                //inputType: 'password',
+                                callback: function (result) {
+                                    if (result) {
+                                        $.post("../ajax/validarSenhaUsuario.php", {
+                                            senha: result
+                                        }, function (r2) {
+                                            var resposta = $.parseJSON(r2);
+                                            if (!resposta.status) {
+                                                _alert(2, resposta.msg, false, false)
+                                            } else {
+                                                $('#formOrdemProducao').submit();
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#formOrdemProducao').submit();
+                        }
+                    }
+                });
+            } else if (idMaquina == 4) {
+                $.ajax({
+                    type: "POST",
+                    url: '../ajax/verificarPalavraChaveAlertaImpressao.php',
+                    data: {
+                        numeroOrdemProducao: $('#formOrdemProducao #numeroOrdemProducao').val()
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        if (data.status) {
+                            bootbox.prompt({
+                                title: "<p>Esta OP possui uma possivel restrição para ser adicionada a essa máquina, para continuar confirme sua senha.</p><p><b>Mensagem:</b> " + data.msg + "</p>",
+                                //inputType: 'password',
+                                callback: function (result) {
+                                    if (result) {
+                                        $.post("../ajax/validarSenhaUsuario.php", {
+                                            senha: result
+                                        }, function (r2) {
+                                            var resposta = $.parseJSON(r2);
+                                            if (!resposta.status) {
+                                                _alert(2, resposta.msg, false, false)
+                                            } else {
+                                                $('#formOrdemProducao').submit();
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        } else {
+                            $('#formOrdemProducao').submit();
+                        }
+                    }
+                });
+            } 
+
+        });
+
+
+    });
+
+
+</script>
+
+<form action="#" class="form-horizontal" id="formOrdemProducao" name="formOrdemProducao" method="POST"
+    enctype="multipart/form-data">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="numeroOrdemProducao">Informe o número da ordem de produção:</label>
+                    <input id="numeroOrdemProducao" type="tel" class="form-control" name="numeroOrdemProducao"
+                        placeholder="Número da ordem de produção" />
+                    <input id="idmaquina" type="hidden" class="form-control" name="idmaquina" value="{idmaquina}" />
+                    <input id="idtipoMaquina" type="hidden" class="form-control" name="idtipoMaquina"
+                        value="{idtipoMaquina}" />
+                </div>
+                <div class="form-group">
+                    <button type="button" id="btn-submit" class="btn btn-block btn-success btn-lg"
+                        data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando">Adicionar ordem de
+                        produção</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

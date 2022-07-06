@@ -1,0 +1,265 @@
+<script>
+    $(function() {
+        $('#formExtrusoraAnalise').validate({
+            rules: {
+                bobina: {required: true},
+                bobinaValorOutro : {required: true, number: true},
+                largura: {required: true},
+                tipoMedida: {required: true},
+                espessura: {required: true},
+                espessuraMax: {required: true},
+                espessuraLargura: {required: true},
+                espessuraComprimento: {required: true},
+                espessuraPeso: {required: true},
+                sanfonaEsq: {required: true},
+                sanfonaDir: {required: true},
+                impressao: {required: true},
+                operador: {required: true},
+                observacaoTexto: {required: false}
+            },
+            messages: {
+                bobina: {required: 'Informe a bobina'},
+                bobinaValorOutro: {required: 'Informe a bobina', number: 'Somente números'},
+                largura: {required: 'Informe a largura'},
+                tipoMedida: {required: 'Selecione o tipo de medida'},
+                espessura: {required: 'Informe a espessura mínima'},
+                espessuraMax: {required: 'Informe a espessura máxima'},
+                espessuraLargura: {required: 'Informe a largura da espessura'},
+                espessuraComprimento: {required: 'Informe o comprimento da espessura'},
+                espessuraPeso: {required: 'Informe o peso da espessura'},
+                sanfonaEsq: {required: 'Informe a sanfona esquerda'},
+                sanfonaDir: {required: 'Informe a sanfona direita'},
+                impressao: {required: 'Informe a qualidade do tratamento de impressão'},
+                operador: {required: 'Informe o operador'},
+                observacaoTexto: {required: ''}
+            },
+            submitHandler: function (form) {
+                $(form).ajaxSubmit({
+                    url: '../ajax/salvarExtrusoraAnalise.php',
+                    type: 'post',
+                    data: {
+                        idordemProducao: $('#formExtrusoraAnalise #carregar-idordemProducao').val(),
+                        idmaquina: $('#formExtrusoraAnalise #carregar-idmaquina').val()
+                    },
+                    beforeSubmit: function () {
+
+                        if(!verificaSelectNegativo('#formExtrusoraAnalise') && verificaObservacaoTexto('#formExtrusoraAnalise')){
+                            _alert(2, 'Você deve preencher o campo de observação', false, false);
+                            return false;
+                        }
+
+                        $('#formExtrusoraAnalise .btn-success').attr('disabled', true);
+                        $('#formExtrusoraAnalise .btn-success').button('loading');
+                    },
+                    success: function (r) {
+                        var data = $.parseJSON(r);
+                        (data.status ? _alert(1, data.msg, form, true) : _alert(2, data.msg, false, false));
+                        $('#formExtrusoraAnalise .btn-success').attr('disabled', false);
+                        $('#formExtrusoraAnalise .btn-success').button('reset');
+                    }
+                });
+            }
+        });
+
+        $('#extrusora-outra-bobina').on('click',function() {
+            if ($(this).prop('checked')) {
+                $('#formExtrusoraAnalise #bobina').selectpicker('hide');
+                $('#formExtrusoraAnalise #bobinaValorOutro').prop('disabled', false).show();
+            } else {
+                $('#formExtrusoraAnalise #bobina').selectpicker('show');
+                $('#formExtrusoraAnalise #bobinaValorOutro').prop('disabled', true).hide();
+            }
+        });
+
+        $('input[name="tipoMedida"]').on('click',function() {
+            if ($(this).val() == 1) {
+                $('.espessuraMedida input').val('').prop('disabled', false);
+                $('.espessuraPeso input').val('').prop('disabled', true);
+                $('#formExtrusoraAnalise .espessuraMedida').show();
+                $('#formExtrusoraAnalise .espessuraPeso').hide();
+            } else {
+                $('.espessuraPeso input').val('').prop('disabled', false);
+                $('.espessuraMedida input').val('').prop('disabled', true);
+                $('#formExtrusoraAnalise .espessuraPeso').show();
+                $('#formExtrusoraAnalise .espessuraMedida').hide();
+                $("#espessuraMediaMediaText span").html('0.00000000000000000000');
+            }
+        });
+
+        /*realizar o calculo da espessura pelo peso*/
+        $("#formExtrusoraAnalise #espessuraLargura, #formExtrusoraAnalise #espessuraComprimento, #formExtrusoraAnalise #espessuraPeso").on('keyup', function(){
+            if ($('#formExtrusoraAnalise #espessuraLargura').val() && $('#formExtrusoraAnalise #espessuraComprimento').val() && $('#formExtrusoraAnalise #espessuraPeso').val()){
+                var densidade = 0.921;
+                var largura = $('#formExtrusoraAnalise #espessuraLargura').val().replace(',', '.');
+                var comprimento = $('#formExtrusoraAnalise #espessuraComprimento').val().replace(',', '.');
+                var peso = $('#formExtrusoraAnalise #espessuraPeso').val().replace(',', '.');
+                var espessuraMedia = ((peso / (largura * comprimento * densidade))*10000).toFixed(2).replace('.', ',');
+                $("#formExtrusoraAnalise #espessuraMedia").val(espessuraMedia);
+                $("#formExtrusoraAnalise #espessuraMediaText span").html(espessuraMedia);
+            } else {
+                $("#formExtrusoraAnalise #espessuraMedia").val('');
+                $("#formExtrusoraAnalise #espessuraMediaText span").html('Preencha todos os campos');
+            }
+        });
+
+        $('#semAnalise').click(function(){
+            semAnaliseExtrusao('#formExtrusoraAnalise');
+        });
+    });
+</script>
+<form action="../ajax/salvarExtrusoraAnalise.php" id="formExtrusoraAnalise" name="formExtrusoraAnalise" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="carregar-idordemProducao" name="carregar-idordemProducao" value=""/>
+    <input type="hidden" id="carregar-idmaquina" name="carregar-idmaquina" value=""/>
+    <input type="hidden" id="idextrusoraAnalise" name="idextrusoraAnalise" value=""/>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-info carregar-cliente"></h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <div class="alert alert-danger alert-bobina-nao_analisada">
+                        <label><input type="checkbox" value="1" id="semAnalise" name="semAnalise"> Bobina não analisada</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="bobina">Bobina:</label>
+                    <input type="text" class="form-control" id="bobinaValorOutro" name="bobinaValorOutro" disabled style="display: none;" placeholder="Ex: 1">
+                    <select class="form-control selectpicker" id="bobina" name="bobina" title="">
+                    </select>
+                    <div class="pull-right mt-xxs">
+                        <label><input type="checkbox" value="1" id="extrusora-outra-bobina"> Outra bobina</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="largura">Largura:</label>
+                    <input type="tel" class="form-control campo-mascara-sanfona" id="largura" name="largura">
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Espessura</div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <label class="radio-inline"><input type="radio" name="tipoMedida" value="1">Medida</label>
+                                    <label class="radio-inline"><input type="radio" name="tipoMedida" value="2">Peso</label>
+                                </div>
+                                <div class="col-xs-6 espessuraPeso text-left" id="espessuraMediaText" style="display: none;">
+                                    <label>Medida: </label> <span style="font-size: 1.2rem;"></span>
+                                    <input type="hidden" class="form-control" id="espessuraMedia" name="espessuraMedia">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row espessuraMedida" style="display: none;">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <input type="tel" class="form-control campo-mascara-espessura" id="espessura" name="espessura" placeholder="mín">
+                                </div>
+                                <div class="col-xs-6">
+                                    <input type="tel" class="form-control campo-mascara-espessura" id="espessuraMax" name="espessuraMax" placeholder="máx">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row espessuraPeso" style="display: none;">
+                    <div class="col-xs-12">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-4">
+                                    <input type="tel" class="form-control campo-mascara-largura" id="espessuraLargura" maxlength="5" name="espessuraLargura" placeholder="largura">
+                                </div>
+                                <div class="col-xs-4">
+                                    <input type="tel" class="form-control campo-mascara-comprimento" id="espessuraComprimento" maxlength="5" name="espessuraComprimento" placeholder="comprimento">
+                                </div>
+                                <div class="col-xs-4">
+                                    <input type="tel" class="form-control campo-mascara-peso" id="espessuraPeso" name="espessuraPeso" maxlength="5" placeholder="peso">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="sanfonaEsq" id="labelSanfona">Sanfona:</label>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <input type="tel" class="form-control campo-mascara-sanfona" id="sanfonaEsq" name="sanfonaEsq" placeholder="esq">
+                        </div>
+                        <div class="col-xs-6">
+                            <input type="tel" class="form-control campo-mascara-sanfona" id="sanfonaDir" name="sanfonaDir" placeholder="dir">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="faceamento">Faceamento da bobina:</label>
+                    <select class="form-control selectpicker" id="faceamento" name="faceamento" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="impressao" id="labelImpressao">Trat. impressão:</label>
+                    <select class="form-control selectpicker" id="impressao" name="impressao" title="">
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <div class="form-group">
+                    <label for="operador">Operador:</label>
+                    <select class="form-control selectpicker" id="operador" name="operador" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <label for="observacao">Observação:</label>
+                    <select class="form-control selectpicker" multiple id="observacao" name="observacao[]" title="">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <textarea class="form-control" rows="3" id="observacaoTexto" name="observacaoTexto" placeholder="Digite alguma observação">Aut:
+Rep:</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <button type="submit" id="salvarAnalise" class="btn btn-block btn-lg btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando">
+                        Incluir Análise
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

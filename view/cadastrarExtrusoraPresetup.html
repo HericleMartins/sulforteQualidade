@@ -1,0 +1,219 @@
+<script>
+    function excluirPresetupMateria(mpLinha){
+        $('.table-presetup-materia tbody tr[id=mp-linha-' + mpLinha+ ']').remove();
+        verificarExisteRegistroMateriaPrima();
+    }
+
+    function cadastarExtrusoraPresetupNao(){
+        bootbox.confirm({
+            message: "Confirma que não ocorreu a vistoria do analista?",
+            title: "Confirmação",
+            size: 'small',
+            buttons: {
+                confirm: {
+                    label: 'Sim',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'Não',
+                    className: 'btn-danger'
+                }
+            },
+            callback: function (result) {
+                if (result){
+                    cadastarExtrusoraPresetup(1);
+                }
+            }
+        });
+    }
+
+    function cadastarExtrusoraPresetup(vistoria){
+        if (!vistoria) {
+            $('#formExtrusoraPresetup .btn-success').attr('disabled', true);
+            $('#formExtrusoraPresetup .btn-success').button('loading');
+            var arrayObj = new Array();
+            $('.table-presetup-materia tbody tr').each(function (i, v) {
+                var obj = new Object();
+                obj['idmateria'] = $(this).find('td:eq(0)').attr('mpid');
+                obj['materia'] = $(this).find('td:eq(0)').text();
+                arrayObj.push(obj);
+            });
+        } else {
+            $('#formExtrusoraPresetup .btn-danger').attr('disabled', true);
+            $('#formExtrusoraPresetup .btn-danger').button('loading');
+        }
+
+        $.ajax({
+            type: "POST",
+            url: '../ajax/salvarExtrusoraPresetup.php',
+            data: {
+                idordemProducao     : $('#formExtrusoraPresetup #carregar-idordemProducao').val(),
+                idmaquina           : $('#formExtrusoraPresetup #carregar-idmaquina').val(),
+                materiaPrima        : JSON.stringify(arrayObj),
+                semVistoria         : vistoria,
+                idextrusoraPresetup : $('#formExtrusoraPresetup #idextrusoraPresetup').val(),
+                observacao          : $('#formExtrusoraPresetup #observacao').val()
+            },
+            success: function(r) {
+                var data = $.parseJSON(r);
+
+                (data.status ? _alert(1, data.msg, false, true) : _alert(2, data.msg, false, false));
+                $('#formExtrusoraPresetup .btn-success, #formExtrusoraPresetup .btn-danger').attr('disabled', false);
+                $('#formExtrusoraPresetup .btn-success, #formExtrusoraPresetup .btn-danger').button('reset');
+            }
+        });
+    }
+
+    $(function() {
+
+        var mpLinha = 1;
+        $('.add-presetup-materia').click(function() {
+            var mpId = $('#formExtrusoraPresetup #materiaPrima').val();
+            var mpText = $('#formExtrusoraPresetup #materiaPrima option:selected').text();
+            var lote = ($('#formExtrusoraPresetup #lote').val() ? $('#formExtrusoraPresetup #lote').val() : 'N/A');
+            var quant = $('#formExtrusoraPresetup #quantidade').val();
+            if (($('#formExtrusoraPresetup #materiaPrima').find('option:selected').attr('possuiLote') == 1 && lote == 'N/A')){
+                _alert(2,'Os campos Matéria-prima, Lote e Quantidade devem ser preenchidos.');
+            } else {
+                if (mpId && quant) {
+                    $('.table-presetup-materia > tbody:last-child').append(
+                        ''
+                        + '<tr id="mp-linha-' + mpLinha + '">'
+                        + '<td mpid="' + mpId + '"><i class="fa fa-check text-success" aria-hidden="true"></i> ' + mpText + ' | ' + lote + ' | ' + quant + '</td>'
+                        + '<td align="center"><button type="button" class="btn btn-danger m-top-xs-5 remove-presetup-materia" title="Excluir" onclick="excluirPresetupMateria(' + mpLinha + ');"><i class="fa fa-trash" aria-hidden="true"></i></button></td>'
+                        + '</tr>'
+                    );
+                    mpLinha++;
+                    $('#formExtrusoraPresetup #lote,#formExtrusoraPresetup #quantidade').val('');
+                    $('#formExtrusoraPresetup #materiaPrima').val('default');
+                    $('#formExtrusoraPresetup #materiaPrima').selectpicker('refresh');
+                    verificarExisteRegistroMateriaPrima();
+                    $('#formExtrusoraPresetup #lote').prop("disabled", false);
+                    $('.lote-nao_aplicavel').hide();
+                } else {
+                    _alert(2, 'Os campos Matéria-prima e Quantidade devem ser preenchidos.');
+                }
+            }
+        });
+
+        $('#formExtrusoraPresetup #materiaPrima').change(function(){
+            if ($(this).find('option:selected').attr('possuiLote') != 1){
+                $('#formExtrusoraPresetup #lote').prop("disabled", true);
+                $('.lote-nao_aplicavel').show();
+            } else {
+                $('#formExtrusoraPresetup #lote').prop("disabled", false);
+                $('.lote-nao_aplicavel').hide();
+            }
+        });
+    });
+</script>
+<form action="../ajax/salvarExtrusoraPresetup.php" id="formExtrusoraPresetup" name="formExtrusoraPresetup" method="POST" enctype="multipart/form-data">
+    <input type="hidden" id="carregar-idordemProducao" name="carregar-idordemProducao" value=""/>
+    <input type="hidden" id="carregar-idmaquina" name="carregar-idmaquina" value=""/>
+    <input type="hidden" id="idextrusoraPresetup" name="idextrusoraPresetup" value=""/>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title text-info carregar-cliente"></h3>
+                <span class="pull-right clickable"><i class="fa fa-chevron-circle-up fa-2x pl-xxs"></i></span>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <b>Item:</b>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 carregar-item"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <b>Medidas:</b>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 carregar-medidas"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <b>Largura do balão:</b>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 carregar-larguraBalao"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <b>Peso extrusora:</b>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 carregar-pesoExtrusao"></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-4">
+                        <b>Matéria-prima:</b>
+                    </div>
+                    <div class="col-xs-6 col-sm-8 carregar-mp"></div>
+                </div>
+            </div>
+        </div>
+        <div class="formExtrusoraPresetup">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label for="observacao">Observação:</label>
+                        <textarea class="form-control" rows="3" id="observacao" name="observacao"></textarea>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="materiaPrima">Matéria-prima:</label>
+                        <select class="form-control selectpicker " data-live-search="true" id="materiaPrima" name="materiaPrima" title="">
+                        </select>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="lote">Lote: <span class="font-italic text-danger lote-nao_aplicavel" style="display: none;"> (Não aplicável)</span></label>
+                        <input type="text" class="form-control" id="lote" name="lote">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="quantidade">Quantidade (kg):</label>
+                        <input type="tel" class="form-control campo-mascara-quantidade" id="quantidade" name="quantidade">
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+                        <button type="button" class="btn btn-primary btn-block add-presetup-materia">
+                            <i class="fa fa-plus"></i>
+                            <span>Incluir</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-presetup-materia">
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="form-group">
+                    <button type="button" id="salvarPresetup" class="btn btn-block btn-lg btn-success" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando" disabled onclick="cadastarExtrusoraPresetup(0);">
+                        Confirmar pré-setup
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-danger btn-block semVistoria" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Enviando" onclick="cadastarExtrusoraPresetupNao();">
+                    Não ocorreu vistoria do analista
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,45 @@
+<!-- START BLOCK : lista-op -->
+<div class="panel panel-default area-trabalho-op" idareaTrabalho="{idareaTrabalho}">
+    <div class="panel-heading {cabecalhoAvisoOp}">
+        <h3 class="panel-title">OP {numero-op} - {nome-cliente}</h3>
+        <span class="pull-right clickable"><i class="fa fa-chevron-circle-up fa-2x pl-xxs"></i></span>
+        <span class="pull-right clickable-remove" data-effect="fadeOut"><a href="#"><i
+                    class="fa fa-minus-circle fa-2x text-danger"></i></a></span></span>
+    </div>
+    <div class="panel-body">
+        <!-- START BLOCK : lista-op-aviso-msg -->
+        <div class="row">
+            <div class="col-12 pl-xs pb-xs">
+                <i class="fa fa-exclamation-triangle mr-xxs" title="{cabecalhoAvisoOpTexto}"></i>
+                <small><i>{cabecalhoAvisoOpTexto}</i></small>
+            </div>
+        </div>
+        <!-- END BLOCK : lista-op-aviso-msg -->
+        <div class="row">
+            <div class="col-xs-4">
+                <button type="button" class="btn btn-success btn-block btn-lg" title="Liberação de produção"
+                    onclick="montarRefileLiberacao({idordemProducao},{idmaquina},'');">
+                    <i class="fa fa-check-circle-o"></i>
+                    <span class="visible-sm-inline visible-md-inline visible-lg-inline">Liberação de produção</span>
+                    {quantRLiberacao}
+                </button>
+            </div>
+            <div class="col-xs-4">
+                <button type="button" class="btn btn-success btn-block btn-lg" title="Análise"
+                    onclick="montarRefileAnalise({idordemProducao},{idmaquina},'');">
+                    <i class="fa fa-eye"></i>
+                    <span class="visible-sm-inline visible-md-inline visible-lg-inline">Análise</span>
+                    {quantRAnalise}
+                </button>
+            </div>
+            <div class="col-xs-4">
+                <button type="button" class="btn btn-info btn-block btn-lg" title="Visualizar"
+                    onclick="visualizarOrdemProducao({idordemProducao},{idmaquina},{maquina});">
+                    <i class="fa fa-search"></i>
+                    <span class="visible-sm-inline visible-md-inline visible-lg-inline">Visualizar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- END BLOCK : lista-op -->

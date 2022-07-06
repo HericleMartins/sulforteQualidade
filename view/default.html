@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Language" content="pt-br">
+    <title>SULFORTE - Sistema para qualidade</title>
+
+    <link rel="shortcut icon" href="../img/favicon.ico" />
+    <!-- Bootstrap -->
+    <link href="../inc/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../inc/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../inc/tooltipster/css/tooltipster.bundle.min.css" rel="stylesheet">
+    <link href="../inc/tooltipster/css/plugins/tooltipster/sideTip/themes/tooltipster-sideTip-shadow.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-datepicker.min.css" rel="stylesheet">
+    <link href="../css/bootstrap-select.min.css" rel="stylesheet">
+    <link rel="stylesheet/less" type="text/css" href="../css/responsive.less">
+    <link rel="stylesheet/less" type="text/css" href="../css/geral.less">
+    <link href="../css/geral.css?v=20190809" rel="stylesheet">
+    <link href="../css/spaces.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="../js/html5shiv.min.js"></script>
+    <script src="../js/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="../js/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="../inc/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../inc/tooltipster/js/tooltipster.bundle.min.js"></script>
+    <script src="../js/bootstrap-datepicker.min.js" charset="UTF-8"></script>
+    <script src="../js/bootstrap-datepicker.pt-BR.min.js" charset="UTF-8"></script>
+    <script src="../js/bootstrap-select.min.js"></script>
+    <script src="../js/less.min.js"></script>
+    <script src="../js/jquery.mask.min.js"></script>
+    <script src="../js/jquery.form.min.js"></script>
+    <script src="../js/jquery.validate.min.js"></script>
+    <script src="../js/additional-methods.min.js"></script>
+    <script src="../js/bootbox.min.js"></script>
+    <script src="../js/load.js"></script>
+    <script src="../js/funcoes.js?v=20200621"></script>
+    <script src="../js/waitingfor.js"></script>
+    <script src="../js/chart.min.js"></script>    
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Menu</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <span class="navbar-brand">SULFORTE</span>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    {menu}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- START BLOCK : HabilitarMenuUsuario -->
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-user"></span> {nomeUsuarioLogado} <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="gerenciarMeuUsuario.php">Meus dados</a></li>
+                            <li><a href="sair.php">Sair</a></li>
+                        </ul>
+                    </li>
+                    <!-- END BLOCK : HabilitarMenuUsuario -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="conteudo mt-s">
+        <div class="container"><h1>
+            {titulo-pagina}</h1>
+        </div>
+        <!-- INCLUDE BLOCK : conteudo -->
+    </div>
+</body>
+</html>
