@@ -33,10 +33,10 @@
                         type: 'doughnut',
                         data: {
                             labels: [
-                                'Extrusao ',
-                                'Impressao ',
-                                'Corte ',
-                                'Refile '
+                                'Extrusao',
+                                'Impressao',
+                                'Corte',
+                                'Refile'
                             ],
                             datasets: [{
                                 data: [extrusora, impressora, corte, refile],
@@ -57,56 +57,46 @@
                                 const [{
                                     index
                                 }] = activePoints;
-                                console.log(this.data.labels[index]);
+                                carregarAnalises(this.data.labels[index]);
                             }
                         }
                     });
                     myLineChart2 = new Chart(document.querySelector('#doughnutChart2'), {
                         type: 'bar',
                         data: {
-                            labels: ['Falta de análise'],
+                            funcoes: ['semPreSetup', 'ordensSemAnalise', 'bobinasSemAnalise'],
+                            labels: [
+                                'Pré-setup',
+                                'Ordens iniciadas',
+                                'Bobinas não analisadas'
+                            ],
                             datasets: [{
-                                label: 'Pré-setup',
-                                data: [r.quantidadeSemPreSetup],
+                                label: 'Falta de analise',
+                                data: [r.quantidadeSemPreSetup,
+                                r.ordensPendentes,
+                                r.quantidadeBobinasNaoAnalisadas],
                                 backgroundColor: [
-                                    'rgba(255, 99, 132, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgb(255, 99, 132)'
-                                ],
-                                borderWidth: 1
-                            }, {
-                                label: 'Ordens iniciadas',
-                                data: [r.ordensPendentes],
-                                backgroundColor: [
-                                    'rgba(255, 159, 64, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(255, 159, 64)'
-                                ],
-                                borderWidth: 1
-                            }, {
-                                label: 'Bobinas não analisadas',
-                                data: [r.quantidadeBobinasNaoAnalisadas],
-                                backgroundColor: [
-                                    'rgba(255, 0, 0, 0.1)'
-                                ],
-                                borderColor: [
+                                    'rgb(255, 99, 132)',
+                                    'rgba(255, 159, 64)',
                                     'rgba(255, 0, 0)'
                                 ],
-                                borderWidth: 1
+                                hoverOffset: 10
                             }]
+
                         },
                         options: {
-                            
                             onClick(e) {
-                                const activePoints = myLineChart2.getElementsAtEventForMode(e, 'nearest', {
-                                    intersect: true
-                                }, false)
-                                const [{
-                                    index
-                                }] = activePoints;
-                                console.log(this.data.datasets[index]);
+                                try {
+                                    const activePoints = myLineChart2.getElementsAtEventForMode(e, 'nearest', {
+                                        intersect: true
+                                    }, false);
+                                    const [{
+                                        index
+                                    }] = activePoints;
+                                    console.log(this.data.teste[index]);
+                                } catch (error) {
+
+                                }
                             }
                         }
                     });
@@ -114,6 +104,84 @@
             }
         });
         waitingDialog.hide();
+    }
+    function carregarAnalises(funcao) {
+        $.ajax({
+            type: "POST",
+            url: '../ajax/carregarAnalise.php',
+            data: {
+                idUsuario: $("#analistaSelecionado").val(),
+                dataInicial: $("#dataInicial").val(),
+                dataFinal: $("#dataFinal").val(),
+                setor: funcao
+            },
+            success: function (r) {
+                r = $.parseJSON(r);
+                console.log(r);
+                $("#resultado").empty();
+                $("#tituloResultado").empty();
+                $("#tituloResultado").append(funcao);
+                
+                var tabela = document.createElement("table");
+                $(tabela).addClass("table table-striped table-responsive");
+                var thead = document.createElement("thead");
+                var cabecalho = document.createElement("tr");
+                var campoCabe = null;                
+
+                campoCabe = document.createElement("th");
+                campoCabe.append('Maquina');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                campoCabe.append('Ordem');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                campoCabe.append('Cliente');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                campoCabe.append('Item');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                campoCabe.append('Data');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                campoCabe.append('Analista');
+                cabecalho.append(campoCabe);
+                thead.append(cabecalho);
+                tabela.append(thead);
+                
+                var tbody = document.createElement("tbody");
+                for (let i = 0; i < r.length; i++) {
+                    var linha = document.createElement("tr");
+                    campo = document.createElement("td");
+                    campo.append(r[i].maquina);
+                    linha.append(campo);                
+                    campo = document.createElement("td");
+                    campo.append(r[i].numero);
+                    linha.append(campo);                
+                    campo = document.createElement("td");
+                    campo.append(r[i].cliente);
+                    linha.append(campo);                
+                    campo = document.createElement("td");
+                    campo.append(r[i].item);
+                    linha.append(campo);                
+                    campo = document.createElement("td");
+                    campo.append(r[i].dataCriacao);
+                    linha.append(campo);                
+                    campo = document.createElement("td");
+                    campo.append(r[i].usuario);
+                    linha.append(campo);         
+
+                    tbody.append(linha);
+                }
+                tabela.append(tbody);
+                $("#resultado").append(tabela);
+                $("#divResultado").css('display','block');
+                
+            }
+        });
+    }
+    function carregarFaltaDeAnalise() {
+
     }
 
     function adicionarOPPendencia(idmaquina, numeroOP) {
@@ -232,7 +300,6 @@
                             <label>Buscar</label>
                             <a id="buscaIndice" class="glyphicon glyphicon-search btn btn-primary"></a>
                         </div>
-
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
@@ -246,46 +313,50 @@
                             <!-- End Doughnut CHart -->
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-    <div class="tab-content planta-fabrica">
-        <!-- START BLOCK : lista-bloco-maquina -->
-        <div class="tab-pane fade in {active}" id="{tipoMaquinaAnchor}">
-            <h3>{tipoMaquina}</h3>
-            <div class="row">
-                <!-- START BLOCK : lista-maquina -->
-                <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
-                    <a href="areaTrabalho.php?maquina={idtipoMaquina}&idmaquina={idmaquina}" title="{mensagemDelay}">
-                        <div class="well well-lg text-center maquina-atalho-{classeMaquina} {classeDelay}">
-                            {tipoMaquina} {maquina}
-                            <i class="{iconeDelay}"></i>
+                    <div class="row panel panel-default area-trabalho-op "style="display: none;" id="divResultado">
+                        <div class="panel-heading  ">
+                            <h3 class="panel-title" id="tituloResultado"></h3>
                         </div>
-                    </a>
+                        <div class="panel-body" id="resultado">
+                        </div>
+                    </div>
                 </div>
-                <!-- END BLOCK : lista-maquina -->
             </div>
         </div>
+        <div class="tab-content planta-fabrica">
+            <!-- START BLOCK : lista-bloco-maquina -->
+            <div class="tab-pane fade in {active}" id="{tipoMaquinaAnchor}">
+                <h3>{tipoMaquina}</h3>
+                <div class="row">
+                    <!-- START BLOCK : lista-maquina -->
+                    <div class="col-xs-6 col-sm-6 col-md-4 col-lg-4">
+                        <a href="areaTrabalho.php?maquina={idtipoMaquina}&idmaquina={idmaquina}"
+                            title="{mensagemDelay}">
+                            <div class="well well-lg text-center maquina-atalho-{classeMaquina} {classeDelay}">
+                                {tipoMaquina} {maquina}
+                                <i class="{iconeDelay}"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- END BLOCK : lista-maquina -->
+                </div>
+            </div>
 
-        <!-- END BLOCK : lista-bloco-maquina -->
-        <div class="row">
-            <div class="col-xs-12">
+            <!-- END BLOCK : lista-bloco-maquina -->
+            <div class="row">
+                <div class="col-xs-12">
+                    <hr>
+                    <span><b>Legenda: </b></span>
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <span>Máquina ociosa</span>
+                </div>
+            </div>
+
+            <div class="pendencias" style="display: none;">
                 <hr>
-                <span><b>Legenda: </b></span>
-                <i class="fa fa-exclamation-triangle"></i>
-                <span>Máquina ociosa</span>
+                <h4>Relação de OPs iniciadas sem nenhuma análise do analista de qualidade</h4>
+                <ul class="list-group relacaoPendencia">
+                </ul>
             </div>
-        </div>
-
-        <div class="pendencias" style="display: none;">
-            <hr>
-            <h4>Relação de OPs iniciadas sem nenhuma análise do analista de qualidade</h4>
-            <ul class="list-group relacaoPendencia">
-            </ul>
         </div>
     </div>
-</div>

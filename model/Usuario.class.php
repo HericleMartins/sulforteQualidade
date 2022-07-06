@@ -73,13 +73,13 @@ class Usuario
     public static function carregarIndiceAnalista($idusuario,$dataInicial,$dataFinal)
     {
         global $sql;
-        $sql->executar("SELECT COUNT ( idusuario ) as indiceExtrusao FROM extrusoraAnalise where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
+        $sql->executar("SELECT COUNT ( idusuario ) as indiceExtrusao FROM viewAcompanhamentoExtrusao where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
         $arrayExtrusao = $sql->ArrayResults();
-        $sql->executar("SELECT COUNT ( idusuario ) as indiceImpressao FROM impressoraAnalise where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
+        $sql->executar("SELECT COUNT ( idusuario ) as indiceImpressao FROM viewAcompanhamentoImpressora where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
         $arrayImpressao = $sql->ArrayResults();
-        $sql->executar("SELECT COUNT ( idusuario ) as indiceCorte FROM corteAnalise where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
+        $sql->executar("SELECT COUNT ( idusuario ) as indiceCorte FROM viewAcompanhamentoCorte where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
         $arrayCorte = $sql->ArrayResults();
-        $sql->executar("SELECT COUNT ( idusuario ) as indiceRefile FROM refileAnalise where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
+        $sql->executar("SELECT COUNT ( idusuario ) as indiceRefile FROM viewAcompanhamentoRefile where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
         $arrayRefile = $sql->ArrayResults();
         $arrayIndices  = array(
             "Refile" => $arrayRefile[0]['indiceRefile'],
@@ -94,28 +94,28 @@ class Usuario
     public static function carregarAnalisesExtrusao($idusuario,$dataInicial,$dataFinal)
     {
         global $sql;
-        $sql->executar("SELECT * FROM extrusoraAnalise where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
+        $sql->executar("SELECT v.numero,op.numero,v.dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoExtrusao v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario;", false);
         $arrayExtrusao = $sql->ArrayResults();
         return $arrayExtrusao;
     }
     public static function carregarAnalisesRefile($idusuario,$dataInicial,$dataFinal)
     {
         global $sql;
-        $sql->executar("SELECT * FROM refileAnalise where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
+        $sql->executar("SELECT v.numero,op.numero,v.dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoRefile v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario;", false);
         $arrayExtrusao = $sql->ArrayResults();
         return $arrayExtrusao;
     }
     public static function carregarAnalisesImpressao($idusuario,$dataInicial,$dataFinal)
     {
         global $sql;
-        $sql->executar("SELECT * FROM impressoraAnalise where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
+        $sql->executar("SELECT v.numero,op.numero,v.dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoImpressora v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario;", false);
         $arrayExtrusao = $sql->ArrayResults();
         return $arrayExtrusao;
     }
     public static function carregarAnalisesCorte($idusuario,$dataInicial,$dataFinal)
     {
         global $sql;
-        $sql->executar("SELECT * FROM corteAnalise where ( CAST(dataCriacao AS DATE)  >= '$dataInicial' and CAST(dataCriacao AS DATE) <= '$dataFinal') and idusuario = $idusuario", false);
+        $sql->executar("SELECT v.numero,op.numero,v.dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoCorte v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario;", false);
         $arrayExtrusao = $sql->ArrayResults();
         return $arrayExtrusao;
     }
