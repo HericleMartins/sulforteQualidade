@@ -101,9 +101,9 @@
                                     const [{
                                         index
                                     }] = activePoints;
-                                    carregarFaltaDeAnalise( this.data.funcoes[index],
-                                                            this.data.labels[index],
-                                                            this.data.classes[index]);
+                                    carregarFaltaDeAnalise(this.data.funcoes[index],
+                                        this.data.labels[index],
+                                        this.data.classes[index]);
                                 } catch (error) {
 
                                 }
@@ -129,7 +129,7 @@
                 r = $.parseJSON(r);
                 $("#resultado").empty();
                 $("#tituloResultado").empty();
-                $("#tituloResultado").append('Análise setor: '+funcao);
+                $("#tituloResultado").append('Análise setor: ' + funcao);
 
                 var tabela = document.createElement("table");
                 $(tabela).addClass("table table-striped table-responsive");
@@ -189,7 +189,7 @@
             }
         });
     }
-    function carregarFaltaDeAnalise(funcao,titulo,classe) {
+    function carregarFaltaDeAnalise(funcao, titulo, classe) {
         $.ajax({
             type: "POST",
             url: '../ajax/carregarFaltaDeAnalise.php',
@@ -198,13 +198,13 @@
                 dataInicial: $("#dataInicial").val(),
                 dataFinal: $("#dataFinal").val(),
                 funcao: funcao,
-                classe:classe
+                classe: classe
             },
             success: function (r) {
                 r = $.parseJSON(r);
                 $("#resultado").empty();
                 $("#tituloResultado").empty();
-                $("#tituloResultado").append('Falta de analise: '+titulo);
+                $("#tituloResultado").append('Falta de analise: ' + titulo);
                 var tabela = document.createElement("table");
                 $(tabela).addClass("table table-striped table-responsive");
                 var thead = document.createElement("thead");
@@ -222,13 +222,19 @@
                 campoCabe = document.createElement("th");
                 campoCabe.append('Item');
                 cabecalho.append(campoCabe);
+
+                if (r[0].dataCriacao) {
+                    campoCabe = document.createElement("th");
+                    campoCabe.append('Data');
+                    cabecalho.append(campoCabe);
+                }
+
                 campoCabe = document.createElement("th");
-                campoCabe.append('Data');
-                cabecalho.append(campoCabe);
-                campoCabe = document.createElement("th");
-                if (r[0].numeroBobinas){
+                if (r[0].numeroBobinas) {
                     campoCabe.append('Bobinas pedido');
-                }else{
+                } else if (r[0].quantBobinaPesada) {
+                    campoCabe.append('Faltam');
+                } else {
                     campoCabe.append('Bobina');
                 }
 
@@ -239,9 +245,9 @@
                 for (let i = 0; i < r.length; i++) {
                     var linha = document.createElement("tr");
                     campo = document.createElement("td");
-                    if (r[i].maquina == null){
+                    if (r[i].maquina == null) {
                         campo.append('Não iniciada');
-                    }else{
+                    } else {
                         campo.append(r[i].maquina);
                     }
                     linha.append(campo);
@@ -254,13 +260,17 @@
                     campo = document.createElement("td");
                     campo.append(r[i].item);
                     linha.append(campo);
+                    if (r[i].dataCriacao) {
+                        campo = document.createElement("td");
+                        campo.append(r[i].dataCriacao);
+                        linha.append(campo);
+                    }
                     campo = document.createElement("td");
-                    campo.append(r[i].dataCriacao);
-                    linha.append(campo);
-                    campo = document.createElement("td");
-                    if (r[i].numeroBobinas){
+                    if (r[i].numeroBobinas) {
                         campo.append(r[i].numeroBobinas);
-                    }else{
+                    } else if (r[0].quantBobinaPesada) {
+                        campo.append(r[i].quantBobinaPesada - r[i].quantRegistro);
+                    } else {
                         campo.append(r[i].bobina);
                     }
                     linha.append(campo);
@@ -347,7 +357,7 @@
             $("#divResultado").css('display', 'none');
         })
         $("#dataInicial").change(function () {
-            if ( $(this).val() > $("#dataFinal").val()){
+            if ($(this).val() > $("#dataFinal").val()) {
                 $("#dataFinal").prop('min', $("#dataInicial").val());
                 $("#dataFinal").val();
             }
