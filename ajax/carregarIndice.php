@@ -8,13 +8,11 @@ $objOrdemProducaoBobina = new OrdemProducaoBobina();
 $aBobinasNaoAnalisadas = $objOrdemProducaoBobina->quantidadeBobinasNaoAnalisadas($dataInicial,$dataFinal);
 
 $objOrdemProducao = new OrdemProducao();
-$aOrdensPendentes = $objOrdemProducao->quantidadePendencia($dataInicial,$dataFinal);
-$aOrdensPreSemSetup = $objOrdemProducao->semPreSetup($idUsuario,$dataInicial,$dataFinal);
+$aOrdensPendentes = $objOrdemProducao->ordensNaoIniciadas($idUsuario,$dataInicial,$dataFinal);
+$aOrdensPreSemSetup = $objOrdemProducao->quantidadeSemPreSetup($idUsuario,$dataInicial,$dataFinal);
 
 $objUsuario = new Usuario();
 $aIndicesUsuario = $objUsuario->carregarIndiceAnalista($idUsuario,$dataInicial,$dataFinal);
-
-
 
 $arrayResultado = array();
 $ordensPendentes['ordensPendentes'] = $aOrdensPendentes != false ? sizeof($aOrdensPendentes): 0;

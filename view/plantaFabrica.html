@@ -11,6 +11,9 @@
     function carregarIndice() {
 
         waitingDialog.show();
+        $("#resultado").empty();
+        $("#tituloResultado").empty();
+        $("#divResultado").css('display', 'none');
         $.ajax({
             type: "POST",
             url: '../ajax/carregarIndice.php',
@@ -50,21 +53,27 @@
                             }]
                         },
                         options: {
+
                             onClick(e) {
-                                const activePoints = myLineChart.getElementsAtEventForMode(e, 'nearest', {
-                                    intersect: true
-                                }, false)
-                                const [{
-                                    index
-                                }] = activePoints;
-                                carregarAnalises(this.data.labels[index]);
+                                try {
+                                    const activePoints = myLineChart.getElementsAtEventForMode(e, 'nearest', {
+                                        intersect: true
+                                    }, false)
+                                    const [{
+                                        index
+                                    }] = activePoints;
+                                    carregarAnalises(this.data.labels[index]);
+                                } catch {
+
+                                }
                             }
                         }
                     });
                     myLineChart2 = new Chart(document.querySelector('#doughnutChart2'), {
                         type: 'bar',
                         data: {
-                            funcoes: ['semPreSetup', 'ordensSemAnalise', 'bobinasSemAnalise'],
+                            funcoes: ['semPreSetup', 'ordensNaoIniciadas', 'bobinasNaoAnalisadas'],
+                            classes: ['OrdemProducao', 'OrdemProducao', 'OrdemProducaoBobina'],
                             labels: [
                                 'Pré-setup',
                                 'Ordens iniciadas',
@@ -93,7 +102,10 @@
                                     const [{
                                         index
                                     }] = activePoints;
-                                    console.log(this.data.teste[index]);
+                                    carregarFaltaDeAnalise( this.data.funcoes[index],
+                                                            this.data.labels[index],
+                                                            this.data.classes[index]);
+                                    console.log(this.data.funcoes[index]);
                                 } catch (error) {
 
                                 }
@@ -117,16 +129,15 @@
             },
             success: function (r) {
                 r = $.parseJSON(r);
-                console.log(r);
                 $("#resultado").empty();
                 $("#tituloResultado").empty();
-                $("#tituloResultado").append(funcao);
-                
+                $("#tituloResultado").append('Análise setor: '+funcao);
+
                 var tabela = document.createElement("table");
                 $(tabela).addClass("table table-striped table-responsive");
                 var thead = document.createElement("thead");
                 var cabecalho = document.createElement("tr");
-                var campoCabe = null;                
+                var campoCabe = null;
 
                 campoCabe = document.createElement("th");
                 campoCabe.append('Maquina');
@@ -148,40 +159,123 @@
                 cabecalho.append(campoCabe);
                 thead.append(cabecalho);
                 tabela.append(thead);
-                
+
                 var tbody = document.createElement("tbody");
                 for (let i = 0; i < r.length; i++) {
                     var linha = document.createElement("tr");
                     campo = document.createElement("td");
                     campo.append(r[i].maquina);
-                    linha.append(campo);                
+                    linha.append(campo);
                     campo = document.createElement("td");
                     campo.append(r[i].numero);
-                    linha.append(campo);                
+                    linha.append(campo);
                     campo = document.createElement("td");
                     campo.append(r[i].cliente);
-                    linha.append(campo);                
+                    linha.append(campo);
                     campo = document.createElement("td");
                     campo.append(r[i].item);
-                    linha.append(campo);                
+                    linha.append(campo);
                     campo = document.createElement("td");
                     campo.append(r[i].dataCriacao);
-                    linha.append(campo);                
+                    linha.append(campo);
                     campo = document.createElement("td");
                     campo.append(r[i].usuario);
-                    linha.append(campo);         
+                    linha.append(campo);
 
                     tbody.append(linha);
                 }
                 tabela.append(tbody);
                 $("#resultado").append(tabela);
-                $("#divResultado").css('display','block');
-                
+                $("#divResultado").css('display', 'block');
+
             }
         });
     }
-    function carregarFaltaDeAnalise() {
+    function carregarFaltaDeAnalise(funcao,titulo,classe) {
+        $.ajax({
+            type: "POST",
+            url: '../ajax/carregarFaltaDeAnalise.php',
+            data: {
+                idUsuario: $("#analistaSelecionado").val(),
+                dataInicial: $("#dataInicial").val(),
+                dataFinal: $("#dataFinal").val(),
+                funcao: funcao,
+                classe:classe
+            },
+            success: function (r) {
+                r = $.parseJSON(r);
+                console.log(r);
+                $("#resultado").empty();
+                $("#tituloResultado").empty();
+                $("#tituloResultado").append('Falta de analise: '+titulo);
+                var tabela = document.createElement("table");
+                $(tabela).addClass("table table-striped table-responsive");
+                var thead = document.createElement("thead");
+                var cabecalho = document.createElement("tr");
+                var campoCabe = null;
+                campoCabe = document.createElement("th");
+                campoCabe.append('Maquina');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                campoCabe.append('Ordem');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                campoCabe.append('Cliente');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                campoCabe.append('Item');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                campoCabe.append('Data');
+                cabecalho.append(campoCabe);
+                campoCabe = document.createElement("th");
+                if (r[0].numeroBobinas){
+                    campoCabe.append('Bobinas pedido');
+                }else{
+                    campoCabe.append('Bobina');
+                }
 
+                cabecalho.append(campoCabe);
+                thead.append(cabecalho);
+                tabela.append(thead);
+                var tbody = document.createElement("tbody");
+                for (let i = 0; i < r.length; i++) {
+                    var linha = document.createElement("tr");
+                    campo = document.createElement("td");
+                    if (r[i].maquina == null){
+                        campo.append('Não iniciada');
+                    }else{
+                        campo.append(r[i].maquina);
+                    }
+                    linha.append(campo);
+                    campo = document.createElement("td");
+                    campo.append(r[i].numero);
+                    linha.append(campo);
+                    campo = document.createElement("td");
+                    campo.append(r[i].cliente);
+                    linha.append(campo);
+                    campo = document.createElement("td");
+                    campo.append(r[i].item);
+                    linha.append(campo);
+                    campo = document.createElement("td");
+                    campo.append(r[i].dataCriacao);
+                    linha.append(campo);
+                    campo = document.createElement("td");
+                    if (r[i].numeroBobinas){
+                        campo.append(r[i].numeroBobinas);
+                    }else{
+                        campo.append(r[i].bobina);
+                    }
+                    linha.append(campo);
+
+                    tbody.append(linha);
+                }
+                tabela.append(tbody);
+                $("#resultado").append(tabela);
+                $("#divResultado").css('display', 'block');
+
+            }
+        });
     }
 
     function adicionarOPPendencia(idmaquina, numeroOP) {
@@ -249,9 +343,17 @@
         });
     });
     $(document).ready(function () {
+        $("#remover").click(function (e) {
+            e.preventDefault();
+            $("#resultado").empty();
+            $("#tituloResultado").empty();
+            $("#divResultado").css('display', 'none');
+        })
         $("#dataInicial").change(function () {
-            $("#dataFinal").prop('min', $("#dataInicial").val());
-            $("#dataFinal").val('');
+            if ( $(this).val() > $("#dataFinal").val()){
+                $("#dataFinal").prop('min', $("#dataInicial").val());
+                $("#dataFinal").val();
+            }
         })
         $("#buscaIndice").click(function () {
             carregarIndice();
@@ -313,9 +415,13 @@
                             <!-- End Doughnut CHart -->
                         </div>
                     </div>
-                    <div class="row panel panel-default area-trabalho-op "style="display: none;" id="divResultado">
-                        <div class="panel-heading  ">
+                    <div class="row panel panel-default area-trabalho-op " style="display: none;" id="divResultado">
+                        <div class="panel-heading">
                             <h3 class="panel-title" id="tituloResultado"></h3>
+                            <span class="pull-right">
+                                <a href="#" id="remover" class="fa fa-minus-circle fa-2x text-danger"
+                                    style="text-decoration:none"></a>
+                            </span>
                         </div>
                         <div class="panel-body" id="resultado">
                         </div>

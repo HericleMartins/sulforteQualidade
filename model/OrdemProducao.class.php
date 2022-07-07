@@ -374,7 +374,7 @@ class OrdemProducao
         }
         return false;
     }
-    public static function quantidadePendencia($dataInicial,$dataFinal)
+    public static function ordensNaoIniciadas($idUsuario, $dataInicial, $dataFinal)
     {
         global $sql;
         $sql->selecionar(false, ' viewPendencia', '*', "quantRegistro = 0 ", 'numero DESC, maquina ASC');
@@ -383,7 +383,8 @@ class OrdemProducao
         }
         return false;
     }
-    public static function semPreSetup($idUsuario,$dataInicial,$dataFinal)    {
+    public static function quantidadeSemPreSetup($idUsuario, $dataInicial, $dataFinal)
+    {
         global $sql;
         $sql->ExecuteSQL("SELECT COUNT(op.idordemProducao) as quantidadeSemPreSetup FROM ordemProducao op 
         where 
@@ -391,6 +392,24 @@ class OrdemProducao
                 op.idordemProducao in (SELECT vae.idordemProducao FROM viewAcompanhamentoExtrusao vae where vae.idusuario = $idUsuario and (vae.numero = '1' or vae.numero = 'A1' ) and cast(vae.dataCriacao as date) >= '$dataInicial' and cast(vae.dataCriacao as date) <= '$dataFinal'))");
         if ($sql->numRows() > 0) {
             return $sql->arrayResults();
+        }
+        return false;
+    }
+    public static function semPreSetup($idUsuario, $dataInicial, $dataFinal)
+    {
+        global $sql;
+        $sql->ExecuteSQL("SELECT    c.cliente,
+		                            numero,
+		                            numeroBobinas,
+		                            extrusora as maquina,
+                                    item,(SELECT min(vae.dataCriacao) FROM viewAcompanhamentoExtrusao vae where vae.idOrdemProducao = op.idordemProducao) as dataCriacao
+        FROM ordemProducao op 
+        inner join cliente c on c.idcliente = op.idcliente
+        where 
+              ( op.idordemProducao not in ( SELECT eps.idordemProducao FROM extrusoraPresetup eps) and
+                op.idordemProducao in (SELECT vae.idordemProducao FROM viewAcompanhamentoExtrusao vae where vae.idusuario = $idUsuario and (vae.numero = '1' or vae.numero = 'A1' ) and cast(vae.dataCriacao as date) >= '$dataInicial' and cast(vae.dataCriacao as date) <= '$dataFinal'))");
+        if ($sql->numRows() > 0) {
+            return $sql->ArrayResults();
         }
         return false;
     }
