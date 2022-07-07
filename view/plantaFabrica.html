@@ -359,7 +359,13 @@
         $("#dataInicial").change(function () {
             if ($(this).val() > $("#dataFinal").val()) {
                 $("#dataFinal").prop('min', $("#dataInicial").val());
-                $("#dataFinal").val();
+                $("#dataFinal").val('');
+            }
+        })
+        $("#dataFinal").focusout(function () {
+            if ($(this).val() < $("#dataInicial").val()) {
+                $(this).prop('min', $("#dataInicial").val());
+                $("#dataFinal").val('');
             }
         })
         $("#buscaIndice").click(function () {
