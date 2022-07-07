@@ -389,7 +389,7 @@ class OrdemProducao
         $sql->ExecuteSQL("SELECT COUNT(op.idordemProducao) as quantidadeSemPreSetup FROM ordemProducao op 
         where 
               ( op.idordemProducao not in ( SELECT eps.idordemProducao FROM extrusoraPresetup eps) and
-                op.idordemProducao in (SELECT vae.idordemProducao FROM viewAcompanhamentoExtrusao vae where vae.idusuario = $idUsuario and (vae.numero = '1' or vae.numero = 'A1' ) and cast(vae.dataCriacao as date) >= '$dataInicial' and cast(vae.dataCriacao as date) <= '$dataFinal'))");
+                op.idordemProducao in (SELECT vae.idordemProducao FROM viewAcompanhamentoExtrusao vae where vae.idusuario = $idUsuario and (vae.numero = '1' or vae.numero = 'A1' or vae.numero = '999' ) and cast(vae.dataCriacao as date) >= '$dataInicial' and cast(vae.dataCriacao as date) <= '$dataFinal'))");
         if ($sql->numRows() > 0) {
             return $sql->arrayResults();
         }
@@ -407,7 +407,7 @@ class OrdemProducao
         inner join cliente c on c.idcliente = op.idcliente
         where 
               ( op.idordemProducao not in ( SELECT eps.idordemProducao FROM extrusoraPresetup eps) and
-                op.idordemProducao in (SELECT vae.idordemProducao FROM viewAcompanhamentoExtrusao vae where vae.idusuario = $idUsuario and (vae.numero = '1' or vae.numero = 'A1' ) and cast(vae.dataCriacao as date) >= '$dataInicial' and cast(vae.dataCriacao as date) <= '$dataFinal'))");
+                op.idordemProducao in (SELECT vae.idordemProducao FROM viewAcompanhamentoExtrusao vae where vae.idusuario = $idUsuario and (vae.numero = '1' or vae.numero = 'A1' or vae.numero = '999' ) and cast(vae.dataCriacao as date) >= '$dataInicial' and cast(vae.dataCriacao as date) <= '$dataFinal'))");
         if ($sql->numRows() > 0) {
             return $sql->ArrayResults();
         }
