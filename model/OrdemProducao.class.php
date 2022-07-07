@@ -401,8 +401,9 @@ class OrdemProducao
         $sql->ExecuteSQL("SELECT    c.cliente,
 		                            numero,
 		                            numeroBobinas,
-		                            extrusora as maquina,
-                                    item,(SELECT min(vae.dataCriacao) FROM viewAcompanhamentoExtrusao vae where vae.idOrdemProducao = op.idordemProducao) as dataCriacao
+                                    item,
+                                    (SELECT min(vae.dataCriacao) FROM viewAcompanhamentoExtrusao vae where vae.idOrdemProducao = op.idordemProducao) as dataCriacao,
+                                    (SELECT vae.idmaquina FROM viewAcompanhamentoExtrusao vae inner join maquina m on m.idmaquina = vae.idmaquina where vae.idOrdemProducao = op.idordemProducao group by vae.idmaquina) as maquina
         FROM ordemProducao op 
         inner join cliente c on c.idcliente = op.idcliente
         where 
