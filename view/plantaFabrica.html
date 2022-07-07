@@ -24,7 +24,6 @@
             },
             success: function (r) {
                 r = $.parseJSON(r);
-                console.log(r);
                 if (r) {
                     if (myLineChart != null) myLineChart.destroy();
                     if (myLineChart2 != null) myLineChart2.destroy();
@@ -105,7 +104,6 @@
                                     carregarFaltaDeAnalise( this.data.funcoes[index],
                                                             this.data.labels[index],
                                                             this.data.classes[index]);
-                                    console.log(this.data.funcoes[index]);
                                 } catch (error) {
 
                                 }
@@ -204,7 +202,6 @@
             },
             success: function (r) {
                 r = $.parseJSON(r);
-                console.log(r);
                 $("#resultado").empty();
                 $("#tituloResultado").empty();
                 $("#tituloResultado").append('Falta de analise: '+titulo);
