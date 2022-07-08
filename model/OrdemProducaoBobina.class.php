@@ -145,6 +145,7 @@ class OrdemProducaoBobina {
             quantBobinaPesada,
             item,
             cliente,
+            ( SELECT MAX(OPB.DATACRIACAO) FROM ordemProducaoBobina opb where opb.idordemProducao = idordemProducao ) as dataUltimaPesada,
             (SELECT
               COUNT(id) AS id
             FROM (SELECT

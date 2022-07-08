@@ -227,6 +227,10 @@
                     campoCabe = document.createElement("th");
                     campoCabe.append('Data');
                     cabecalho.append(campoCabe);
+                } else if (r[0].dataUltimaPesada) {
+                    campoCabe = document.createElement("th");
+                    campoCabe.append('Data ultima');
+                    cabecalho.append(campoCabe);
                 }
 
                 campoCabe = document.createElement("th");
@@ -263,6 +267,10 @@
                     if (r[i].dataCriacao) {
                         campo = document.createElement("td");
                         campo.append(r[i].dataCriacao);
+                        linha.append(campo);
+                    } else if (r[i].dataUltimaPesada) {
+                        campo = document.createElement("td");
+                        campo.append(r[i].dataUltimaPesada);
                         linha.append(campo);
                     }
                     campo = document.createElement("td");
