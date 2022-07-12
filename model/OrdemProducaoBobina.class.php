@@ -107,7 +107,7 @@ class OrdemProducaoBobina {
               FROM (SELECT
                 idextrusoraAnalise AS id,
                 idordemProducao AS idop
-              FROM sulforte.dbo.extrusoraAnalise
+              FROM extrusoraAnalise
               ) AS A
               WHERE (idop = C.idordemProducao))
               AS quantRegistro
@@ -117,15 +117,15 @@ class OrdemProducaoBobina {
               B.maquina,
               M.idmaquina,
               COUNT(B.idordemProducaoBobina) AS quantBobinaPesada
-            FROM sulforte.dbo.ordemProducao AS O
-            INNER JOIN sulforte.dbo.ordemProducaoBobina AS B
+            FROM ordemProducao AS O
+            INNER JOIN ordemProducaoBobina AS B
               ON B.idordemProducao = O.idordemProducao
-            LEFT OUTER JOIN sulforte.dbo.maquina AS M
+            LEFT OUTER JOIN maquina AS M
               ON M.maquina = B.maquina
               AND M.idtipoMaquina = 1
             WHERE o.idordemProducao IN (
-                    SELECT opb.IDORDEMPRODUCAO FROM sulforte.DBO.ordemProducaoBobina opb WHERE CAST(opb.dataCriacao AS DATE) >= '$dataInicial' AND  CAST(opb.dataCriacao AS DATE) <= '$dataFinal'
-                    ) or O.idordemProducao in ( SELECT vAT.IDORDEMPRODUCAO FROM SULFORTE.DBO.viewareaTrabalho vAT where vat.idtipoMaquina = 1)
+                    SELECT opb.IDORDEMPRODUCAO FROM ordemProducaoBobina opb WHERE CAST(opb.dataCriacao AS DATE) >= '$dataInicial' AND  CAST(opb.dataCriacao AS DATE) <= '$dataFinal'
+                    ) or O.idordemProducao in ( SELECT vAT.IDORDEMPRODUCAO FROM viewareaTrabalho vAT where vat.idtipoMaquina = 1)
             GROUP BY O.idordemProducao,
                      O.numero,
                      B.maquina,
@@ -138,20 +138,20 @@ class OrdemProducaoBobina {
     }
     public static function bobinasNaoAnalisadas($idUsuario,$dataInicial,$dataFinal) {
         global $sql;
-        $sql->ExecuteSQL("SELECT * from(
+        $sql->ExecuteSQL("SELECT *,( SELECT MAX(OPB.DATACRIACAO) FROM ordemProducaoBobina opb where opb.idordemProducao = G.idordemProducao ) as dataUltimaPesada from(
           SELECT
             numero,
             maquina,
             quantBobinaPesada,
             item,
             cliente,
-            ( SELECT MAX(OPB.DATACRIACAO) FROM ordemProducaoBobina opb where opb.idordemProducao = idordemProducao ) as dataUltimaPesada,
+            idOrdemProducao,
             (SELECT
               COUNT(id) AS id
             FROM (SELECT
               idextrusoraAnalise AS id,
               idordemProducao AS idop
-            FROM sulforte.dbo.extrusoraAnalise
+            FROM extrusoraAnalise
             ) AS A
             WHERE (idop = C.idordemProducao))
             AS quantRegistro
@@ -163,16 +163,16 @@ class OrdemProducaoBobina {
             B.maquina,
             M.idmaquina,
             COUNT(B.idordemProducaoBobina) AS quantBobinaPesada
-          FROM sulforte.dbo.ordemProducao AS O
-          INNER JOIN sulforte.dbo.ordemProducaoBobina AS B
+          FROM ordemProducao AS O
+          INNER JOIN ordemProducaoBobina AS B
             ON B.idordemProducao = O.idordemProducao inner join
-             sulforte.dbo.cliente c on c.idcliente = O.idcliente
-          LEFT OUTER JOIN sulforte.dbo.maquina AS M
+             cliente c on c.idcliente = O.idcliente
+          LEFT OUTER JOIN maquina AS M
             ON M.maquina = B.maquina
             AND M.idtipoMaquina = 1
           WHERE o.idordemProducao IN (
-                  SELECT opb.IDORDEMPRODUCAO FROM sulforte.DBO.ordemProducaoBobina opb WHERE CAST(opb.dataCriacao AS DATE) >= '$dataInicial' AND  CAST(opb.dataCriacao AS DATE) <= '$dataFinal'
-                  ) or O.idordemProducao in ( SELECT vAT.IDORDEMPRODUCAO FROM SULFORTE.DBO.viewareaTrabalho vAT where vat.idtipoMaquina = 1)
+                  SELECT opb.IDORDEMPRODUCAO FROM ordemProducaoBobina opb WHERE CAST(opb.dataCriacao AS DATE) >= '$dataInicial' AND  CAST(opb.dataCriacao AS DATE) <= '$dataFinal'
+                  ) or O.idordemProducao in ( SELECT vAT.IDORDEMPRODUCAO FROM viewareaTrabalho vAT where vat.idtipoMaquina = 1)
           GROUP BY O.idordemProducao,
                    O.numero,
                    B.maquina,
