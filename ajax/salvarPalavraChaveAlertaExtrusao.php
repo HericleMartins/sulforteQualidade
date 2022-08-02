@@ -11,13 +11,13 @@ if($r['idExtrusaoPalavraChaveAlerta'] != ''){
     //edição
     $id = (int)$r['idExtrusaoPalavraChaveAlerta'];
 
-    $status = $obj->editar(array('extrusaoPalavraChaveAlerta' => utf8_decode($r['extrusaoPalavraChaveAlerta']), 'mensagem' => utf8_decode($r['mensagem'])), 'idExtrusaoPalavraChaveAlerta = ' . $r['idExtrusaoPalavraChaveAlerta']);
+    $status = $obj->editar(array('extrusaoPalavraChaveAlerta' => $r['extrusaoPalavraChaveAlerta'], 'mensagem' => $r['mensagem']), 'idExtrusaoPalavraChaveAlerta = ' . $r['idExtrusaoPalavraChaveAlerta']);
 } else {
 
     //cadastro
     $dados = array(
-        'extrusaoPalavraChaveAlerta' => utf8_decode($r['extrusaoPalavraChaveAlerta']),
-        'mensagem' => utf8_decode($r['mensagem']),
+        'extrusaoPalavraChaveAlerta' => $r['extrusaoPalavraChaveAlerta'],
+        'mensagem' => $r['mensagem'],
         'dataCriacao' => getData(),
         'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario']
     );

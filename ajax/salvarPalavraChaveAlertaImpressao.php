@@ -11,13 +11,13 @@ if($r['idImpressaoPalavraChaveAlerta'] != ''){
     //edição
     $id = (int)$r['idImpressaoPalavraChaveAlerta'];
 
-    $status = $obj->editar(array('impressaoPalavraChaveAlerta' => utf8_decode($r['impressaoPalavraChaveAlerta']), 'mensagem' => utf8_decode($r['mensagem'])), 'idImpressaoPalavraChaveAlerta = ' . $r['idImpressaoPalavraChaveAlerta']);
+    $status = $obj->editar(array('impressaoPalavraChaveAlerta' => $r['impressaoPalavraChaveAlerta'], 'mensagem' => $r['mensagem']), 'idImpressaoPalavraChaveAlerta = ' . $r['idImpressaoPalavraChaveAlerta']);
 } else {
 
     //cadastro
     $dados = array(
-        'impressaoPalavraChaveAlerta' => utf8_decode($r['impressaoPalavraChaveAlerta']),
-        'mensagem' => utf8_decode($r['mensagem']),
+        'impressaoPalavraChaveAlerta' => $r['impressaoPalavraChaveAlerta'],
+        'mensagem' => $r['mensagem'],
         'dataCriacao' => getData(),
         'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario']
     );

@@ -11,13 +11,13 @@ if($r['idRefilePalavraChaveAlerta'] != ''){
     //edição
     $id = (int)$r['idRefilePalavraChaveAlerta'];
 
-    $status = $obj->editar(array('refilePalavraChaveAlerta' => utf8_decode($r['refilePalavraChaveAlerta']), 'mensagem' => utf8_decode($r['mensagem'])), 'idRefilePalavraChaveAlerta = ' . $r['idRefilePalavraChaveAlerta']);
+    $status = $obj->editar(array('refilePalavraChaveAlerta' => $r['refilePalavraChaveAlerta'], 'mensagem' => $r['mensagem']), 'idRefilePalavraChaveAlerta = ' . $r['idRefilePalavraChaveAlerta']);
 } else {
 
     //cadastro
     $dados = array(
-        'refilePalavraChaveAlerta' => utf8_decode($r['refilePalavraChaveAlerta']),
-        'mensagem' => utf8_decode($r['mensagem']),
+        'refilePalavraChaveAlerta' => $r['refilePalavraChaveAlerta'],
+        'mensagem' => $r['mensagem'],
         'dataCriacao' => getData(),
         'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario']
     );

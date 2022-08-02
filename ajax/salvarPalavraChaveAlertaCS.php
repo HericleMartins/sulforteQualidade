@@ -13,15 +13,15 @@ if ($r['idCortePalavraChaveAlerta'] != '') {
 
     $status = $obj->editar(
         array(
-            'cortePalavraChaveAlerta' => utf8_decode($r['cortePalavraChaveAlerta']),
-            'mensagem' => utf8_decode($r['mensagem'])
+            'cortePalavraChaveAlerta' => $r['cortePalavraChaveAlerta'],
+            'mensagem' => $r['mensagem']
         ),'idCortePalavraChaveAlerta = ' . $r['idCortePalavraChaveAlerta']);
 } else {
 
     //cadastro
     $dados = array(
-        'cortePalavraChaveAlerta' => utf8_decode($r['cortePalavraChaveAlerta']),
-        'mensagem' => utf8_decode($r['mensagem']),
+        'cortePalavraChaveAlerta' => $r['cortePalavraChaveAlerta'],
+        'mensagem' => $r['mensagem'],
         'dataCriacao' => getData(),
         'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario']
     );

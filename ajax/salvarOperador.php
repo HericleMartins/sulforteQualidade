@@ -5,7 +5,7 @@ $r = getRequest($_POST);
 $obj = new Operador();
 
 if(!(int)$r['codigo'] > 0){
-    //Código ERP deve ser numérico inteiro
+    //Cï¿½digo ERP deve ser numï¿½rico inteiro
     echo retornarJsonEncode(array('status' => 0, 'msg' => montarMensagemRetorno('OPx001e')));
     die;
 }
@@ -14,33 +14,33 @@ SqlServer::abrirTransacao();
 
 if($r['idoperador'] != ''){
 
-    //edição
+    //ediï¿½ï¿½o
     $id = (int)$r['idoperador'];
 
     $arrayOperador = Operador::listar('codigo = ' . $r['codigo'] . ' AND idoperador <> ' . $id . ' AND o.idtipoMaquina = ' . $r['idtipoMaquina']);
 
     if($arrayOperador){
         SqlServer::cancelarTransacao();
-        //Código ERP já cadastrado para outro operador
+        //Cï¿½digo ERP jï¿½ cadastrado para outro operador
         echo retornarJsonEncode(array('status' => 0, 'msg' => montarMensagemRetorno('OPx002e')));
         die;
     }
 
-    $status = $obj->editar(array('codigo' => $r['codigo'], 'operador' => utf8_decode($r['operador']), 'idtipoMaquina' => $r['idtipoMaquina']), 'idoperador = ' . $r['idoperador']);
+    $status = $obj->editar(array('codigo' => $r['codigo'], 'operador' => $r['operador'], 'idtipoMaquina' => $r['idtipoMaquina']), 'idoperador = ' . $r['idoperador']);
 } else {
 
     $arrayOperador = Operador::listar('codigo = ' . $r['codigo'] . ' AND o.idtipoMaquina = ' . $r['idtipoMaquina']);
 
     if($arrayOperador){
         SqlServer::cancelarTransacao();
-        //Código ERP já cadastrado para outro operador
+        //Cï¿½digo ERP jï¿½ cadastrado para outro operador
         echo retornarJsonEncode(array('status' => 0, 'msg' => montarMensagemRetorno('OPx003e')));
         die;
     }
     //cadastro
     $dados = array(
         'codigo'            => $r['codigo'],
-        'operador'          => utf8_decode($r['operador']),
+        'operador'          => $r['operador'],
         'naoMostrar'        => '0',
         'idtipoMaquina'     => $r['idtipoMaquina'],
         'dataCriacao'       => getData(),

@@ -27,7 +27,7 @@ if ($r['novaSenha'] != $r['senhaConfirma']) {
 }
 
 $dados = array(
-    'usuario' => utf8_decode($r['usuario']),
+    'usuario' => $r['usuario'],
     'senha' => ($r['novaSenha'] ? sha1($r['novaSenha']) : false)
 );
 

@@ -23,7 +23,7 @@ $dados = array(
     'espessuraPeso'         => (($r['espessuraPeso'] != '') ? str_replace(',', '.', $r['espessuraPeso']) : NULL),
     'espessuraMedia'        => (($r['espessuraMedia'] != '') ? str_replace(',', '.', $r['espessuraMedia']) : NULL),
     'idoperador'            => (isset($r['operador']) ? (int)$r['operador'] : NULL),
-    'obs'                   => utf8_decode($r['observacaoTexto']),
+    'obs'                   => $r['observacaoTexto'],
     'impressao'             => (isset($r['impressao']) ? (int)$r['impressao'] : NULL),
     'sanfonaEsq'            => (isset($r['sanfonaEsq']) ? str_replace(',', '.', $r['sanfonaEsq']) : NULL),
     'sanfonaDir'            => (isset($r['sanfonaDir']) ? str_replace(',', '.', $r['sanfonaDir']) : NULL),
@@ -35,7 +35,7 @@ $dados = array(
 
 if($idextrusoraAnalise > 0){
 
-    //edição
+    //ediï¿½ï¿½o
     unset($dados['idmaquina']);
     unset($dados['idordemProducao']);
     unset($dados['idusuario']);
@@ -58,7 +58,7 @@ if ($r['bobinaValorOutro']){
             'idoperador' => 1, //criar operador "sistema" no BD
             'dataCriacao' => getData()
         );
-        $dadosOutraBobina = array_map('utf8_decode', $dadosOutraBobina);
+        $dadosOutraBobina =  $dadosOutraBobina;
         $objOutraBobina = new OrdemProducaoBobina();
         $statusOutraBobina = $objOutraBobina->cadastrar($dadosOutraBobina);
         $idoutraBobina = $sql->lastID;
@@ -109,7 +109,7 @@ if ($status) {
                 'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario'],
                 'dataCriacao' => getData()
             );
-            $dadosObs = array_map('utf8_decode', $dadosObs);
+            $dadosObs = $dadosObs;
 
             $statusObs = $objObs->cadastrar($dadosObs);
 

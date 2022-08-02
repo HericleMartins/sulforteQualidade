@@ -13,7 +13,7 @@ SqlServer::abrirTransacao();
 
 if($r['idextrusoraSetup'] != '') {
 
-    //edição
+    //ediï¿½ï¿½o
     if($r['semVistoria'] == 1){
         $dados = array(
             'idoperador'            => NULL,
@@ -51,8 +51,8 @@ if($r['idextrusoraSetup'] != '') {
             'faceamento'            => (($r['faceamento'] != '') ? (int)$r['faceamento'] : NULL)
         );
     }
-    $dados = array_map('utf8_decode',$dados);
-    //Verifica se sanfona é NULL
+    $dados = $dados;
+    //Verifica se sanfona ï¿½ NULL
     $dados['sanfonaEsq'] = ($r['sanfonaEsq'] ? str_replace(',', '.', $r['sanfonaEsq']) : NULL);
     $dados['sanfonaDir'] = ($r['sanfonaDir'] ? str_replace(',', '.', $r['sanfonaDir']) : NULL);
 
@@ -95,8 +95,8 @@ if($r['idextrusoraSetup'] != '') {
             'dataCriacao'           => getData()
         );
     }
-    $dados = array_map('utf8_decode',$dados);
-    //Verifica se sanfona é NULL
+    $dados = $dados;
+    //Verifica se sanfona ï¿½ NULL
     $dados['sanfonaEsq'] = ($r['sanfonaEsq'] ? str_replace(',', '.', $r['sanfonaEsq']) : NULL);
     $dados['sanfonaDir'] = ($r['sanfonaDir'] ? str_replace(',', '.', $r['sanfonaDir']) : NULL);
 
@@ -129,7 +129,7 @@ if ($status) {
                 'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario'],
                 'dataCriacao' => getData()
             );
-            $dadosObs = array_map('utf8_decode', $dadosObs);
+            $dadosObs =  $dadosObs;
 
             $objObs = new ExtrusoraSetupObservacao();
 

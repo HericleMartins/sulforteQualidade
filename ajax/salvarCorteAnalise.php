@@ -18,7 +18,7 @@ if($r['idcorteAnalise'] != '') {
         'sacaria'               => (isset($r['qualidadeSacaria']) ? (int)$r['qualidadeSacaria'] : NULL),
         'idcodigoFaca'          => (isset($r['codigoFaca']) ? (int)$r['codigoFaca'] : NULL),
         'impressao'             => (isset($r['qualidadeImpressao']) ? (int)$r['qualidadeImpressao'] : NULL),
-        'obs'                   => utf8_decode($r['observacaoTexto']),
+        'obs'                   => $r['observacaoTexto'],
         'semAnalise'            => ($r['semAnalise'] == '1' ? 1 : NULL),
         'reinspecao'            => ($r['reinspecao'] == '1' ? 1 : NULL)
     );
@@ -40,7 +40,7 @@ if($r['idcorteAnalise'] != '') {
         'sacaria'               => (isset($r['qualidadeSacaria']) ? (int)$r['qualidadeSacaria'] : NULL),
         'idcodigoFaca'          => (isset($r['codigoFaca']) ? (int)$r['codigoFaca'] : NULL),
         'impressao'             => (isset($r['qualidadeImpressao']) ? (int)$r['qualidadeImpressao'] : NULL),
-        'obs'                   => utf8_decode($r['observacaoTexto']),
+        'obs'                   => $r['observacaoTexto'],
         'idusuario'             => $_SESSION[SESSAO_SISTEMA]['idusuario'],
         'dataCriacao'           => getData(),
         'semAnalise'            => ($r['semAnalise'] == '1' ? 1 : NULL),
@@ -58,7 +58,7 @@ if ($r['bobinaValorOutro']){
         'idoperador' => 1, //criar operador "sistema" no BD
         'dataCriacao' => getData()
     );
-    $dadosOutraBobina = array_map('utf8_decode', $dadosOutraBobina);
+    $dadosOutraBobina = $dadosOutraBobina;
     $objOutraBobina = new OrdemProducaoBobina();
     $statusOutraBobina = $objOutraBobina->cadastrar($dadosOutraBobina);
     $idoutraBobina = $sql->lastID;
@@ -107,7 +107,7 @@ if ($status) {
                 'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario'],
                 'dataCriacao' => getData()
             );
-            $dadosObs = array_map('utf8_decode', $dadosObs);
+            $dadosObs = $dadosObs;
 
             $objObs = new CorteAnaliseObservacao();
 

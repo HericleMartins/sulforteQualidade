@@ -231,11 +231,8 @@ class OrdemProducao
         $status = true;
         if (count($this->arrayBobinas) > 0) {
             foreach ($this->arrayBobinas as $key => $value) {
-
                 $objOperador = new Operador();
-
                 $arrayOperador = $objOperador->carregarPor('codigo = ' . $value['idoperador']);
-
                 if ($arrayOperador) {
                     $status = $objOperador->editar(array('operador' => $value['operador']), 'codigo = ' . $value['idoperador']);
                     $idoperador = $arrayOperador['idoperador'];

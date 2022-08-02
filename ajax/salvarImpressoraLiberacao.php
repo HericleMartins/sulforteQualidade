@@ -8,7 +8,7 @@ SqlServer::abrirTransacao();
 
 if($r['idimpressoraLiberacao'] != '') {
 
-    //edição
+    //ediï¿½ï¿½o
     if($r['semVistoria'] == 1){
         $dados = array(
             'idoperador'            => NULL,
@@ -26,7 +26,7 @@ if($r['idimpressoraLiberacao'] != '') {
             'testeAderenciaTinta'   => NULL,
             'sentidoDesbobinamento' => NULL,
 
-            'obs'                   => utf8_decode($r['observacaoTexto']),
+            'obs'                   => $r['observacaoTexto'],
             'reinspecao'            => NULL
         );
     } else {
@@ -46,7 +46,7 @@ if($r['idimpressoraLiberacao'] != '') {
             'testeAderenciaTinta'   => (int)$r['testeAderenciaTinta'],
             'sentidoDesbobinamento' => (int)$r['sentidoDesbobinamento'],
 
-            'obs'                   => utf8_decode($r['observacaoTexto']),
+            'obs'                   => $r['observacaoTexto'],
             'reinspecao'            => ($r['reinspecao'] == '1' ? 1 : NULL)
         );
     }
@@ -72,7 +72,7 @@ if($r['idimpressoraLiberacao'] != '') {
             'testeAderenciaTinta'   => NULL,
             'sentidoDesbobinamento' => NULL,
 
-            'obs'                   => utf8_decode($r['observacaoTexto']),
+            'obs'                   => $r['observacaoTexto'],
             'idusuario'             => $_SESSION[SESSAO_SISTEMA]['idusuario'],
             'dataCriacao'           => getData(),
             'reinspecao'            => NULL
@@ -96,7 +96,7 @@ if($r['idimpressoraLiberacao'] != '') {
             'testeAderenciaTinta'   => (int)$r['testeAderenciaTinta'],
             'sentidoDesbobinamento' => (int)$r['sentidoDesbobinamento'],
 
-            'obs'                   => utf8_decode($r['observacaoTexto']),
+            'obs'                   => $r['observacaoTexto'],
             'idusuario'             => $_SESSION[SESSAO_SISTEMA]['idusuario'],
             'dataCriacao'           => getData(),
             'reinspecao'            => ($r['reinspecao'] == '1' ? 1 : NULL)
@@ -112,7 +112,7 @@ if ($r['bobinaValorOutro']){
         'idoperador' => 1, //criar operador "sistema" no BD
         'dataCriacao' => getData()
     );
-    $dadosOutraBobina = array_map('utf8_decode', $dadosOutraBobina);
+    $dadosOutraBobina = $dadosOutraBobina;
     $objOutraBobina = new OrdemProducaoBobina();
     $statusOutraBobina = $objOutraBobina->cadastrar($dadosOutraBobina);
     $idoutraBobina = $sql->lastID;
@@ -161,7 +161,7 @@ if ($status) {
                 'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario'],
                 'dataCriacao' => getData()
             );
-            $dadosObs = array_map('utf8_decode', $dadosObs);
+            $dadosObs = $dadosObs;
 
             $objObs = new ImpressoraLiberacaoObservacao();
 

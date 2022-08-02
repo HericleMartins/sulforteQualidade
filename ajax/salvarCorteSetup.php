@@ -8,7 +8,7 @@ SqlServer::abrirTransacao();
 
 if($r['idcorteLiberacao'] != '') {
 
-    //edição
+    //ediï¿½ï¿½o
     if($r['semVistoria'] == 1){
         $dados = array(
             'idoperador'            => NULL,
@@ -23,7 +23,7 @@ if($r['idcorteLiberacao'] != '') {
             'sacaria'               => NULL,
             'idcodigoFaca'          => NULL,
             'impressao'             => NULL,
-            'obs'                   => utf8_decode($r['observacaoTexto']),
+            'obs'                   => $r['observacaoTexto'],
             'reinspecao'            => NULL
         );
     } else {
@@ -40,7 +40,7 @@ if($r['idcorteLiberacao'] != '') {
             'sacaria'               => (int)$r['qualidadeSacaria'],
             'idcodigoFaca'          => (int)$r['codigoFaca'],
             'impressao'             => (int)$r['qualidadeImpressao'],
-            'obs'                   => utf8_decode($r['observacaoTexto']),
+            'obs'                   => $r['observacaoTexto'],
             'reinspecao'            => ($r['reinspecao'] == '1' ? 1 : NULL)
         );
     }
@@ -62,7 +62,7 @@ if($r['idcorteLiberacao'] != '') {
             'sacaria'               => NULL,
             'idcodigoFaca'          => NULL,
             'impressao'             => NULL,
-            'obs'                   => utf8_decode($r['observacaoTexto']),
+            'obs'                   => $r['observacaoTexto'],
             'idusuario'             => $_SESSION[SESSAO_SISTEMA]['idusuario'],
             'dataCriacao'           => getData(),
             'reinspecao'            => NULL
@@ -81,7 +81,7 @@ if($r['idcorteLiberacao'] != '') {
             'sacaria'               => (int)$r['qualidadeSacaria'],
             'idcodigoFaca'          => (int)$r['codigoFaca'],
             'impressao'             => (int)$r['qualidadeImpressao'],
-            'obs'                   => utf8_decode($r['observacaoTexto']),
+            'obs'                   => $r['observacaoTexto'],
             'idusuario'             => $_SESSION[SESSAO_SISTEMA]['idusuario'],
             'dataCriacao'           => getData(),
             'reinspecao'            => ($r['reinspecao'] == '1' ? 1 : NULL)
@@ -100,7 +100,7 @@ if ($r['bobinaValorOutro']){
         'idoperador' => 1, //criar operador "sistema" no BD
         'dataCriacao' => getData()
     );
-    $dadosOutraBobina = array_map('utf8_decode', $dadosOutraBobina);
+    $dadosOutraBobina = $dadosOutraBobina;
     $objOutraBobina = new OrdemProducaoBobina();
     $statusOutraBobina = $objOutraBobina->cadastrar($dadosOutraBobina);
     $idoutraBobina = $sql->lastID;
@@ -149,7 +149,7 @@ if ($status) {
                 'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario'],
                 'dataCriacao' => getData()
             );
-            $dadosObs = array_map('utf8_decode', $dadosObs);
+            $dadosObs = $dadosObs;
 
             $objObs = new CorteLiberacaoObservacao();
 

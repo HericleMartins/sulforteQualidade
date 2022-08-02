@@ -12,10 +12,10 @@ if ($r['senha'] != $r['senhaConfirma']) {
     die();
 }
 
-if($r['idusuario'] != '') { //edição
+if($r['idusuario'] != '') { //ediï¿½ï¿½o
 
     $dados = array(
-        'usuario' => utf8_decode($r['usuario']),
+        'usuario' => $r['usuario'],
         'email' => $r['email'],
         'senha' => ($r['senha'] ? sha1($r['senha']) : false),
         'idgrupo' => $r['idgrupo'],
@@ -42,7 +42,7 @@ if($r['idusuario'] != '') { //edição
     }
 
     $dados = array(
-        'usuario' => utf8_decode($r['usuario']),
+        'usuario' => $r['usuario'],
         'email' => $r['email'],
         'senha' => sha1($r['senha']),
         'idgrupo' => $r['idgrupo'],

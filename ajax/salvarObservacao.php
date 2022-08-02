@@ -8,15 +8,15 @@ SqlServer::abrirTransacao();
 
 if($r['idobservacao'] != ''){
 
-    //edição
+    //ediï¿½ï¿½o
     $id = (int)$r['idobservacao'];
 
-    $status = $obj->editar(array('observacao' => utf8_decode($r['observacao']), 'idtipoMaquina' => $r['idtipoMaquina']), 'idobservacao = ' . $r['idobservacao']);
+    $status = $obj->editar(array('observacao' => $r['observacao'], 'idtipoMaquina' => $r['idtipoMaquina']), 'idobservacao = ' . $r['idobservacao']);
 } else {
 
     //cadastro
     $dados = array(
-        'observacao'        => utf8_decode($r['observacao']),
+        'observacao'        => $r['observacao'],
         'idtipoMaquina'     => $r['idtipoMaquina'],
         'dataCriacao'       => getData(),
         'idusuario'         => $_SESSION[SESSAO_SISTEMA]['idusuario']

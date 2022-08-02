@@ -7,15 +7,15 @@ $r = getRequest($_POST);
 $obj = new ExtrusoraPresetup();
 
 if($r['idextrusoraPresetup'] != ''){
-    //edição
+    //ediï¿½ï¿½o
     $id = (int)$r['idextrusoraPresetup'];
-    $status = $obj->editar(array('semVistoria' => $r['semVistoria'],'observacao' => ($r['observacao'] ? utf8_decode($r['observacao']) : NULL)), 'idextrusoraPresetup = ' . $r['idextrusoraPresetup']);
+    $status = $obj->editar(array('semVistoria' => $r['semVistoria'],'observacao' => ($r['observacao'] ? $r['observacao'] : NULL)), 'idextrusoraPresetup = ' . $r['idextrusoraPresetup']);
 } else {
     //cadastro
     $dados = array(
         'idmaquina'       => (int)$r['idmaquina'],
         'idordemProducao' => (int)$r['idordemProducao'],
-        'observacao'      => utf8_decode($r['observacao']),
+        'observacao'      => $r['observacao'],
         'semVistoria'     => $r['semVistoria'],
         'idusuario'       => $_SESSION[SESSAO_SISTEMA]['idusuario'],
         'dataCriacao'     => getData()
@@ -26,12 +26,12 @@ if($r['idextrusoraPresetup'] != ''){
     $id = $sql->lastID;
 }
 
-//verifica se deu tudo certo no cadastro/edição do pai
+//verifica se deu tudo certo no cadastro/ediï¿½ï¿½o do pai
 if ($status) {
 
     $objMateria = new ExtrusoraPresetupMateria();
 
-    //remove todas as matérias
+    //remove todas as matï¿½rias
     $status = $objMateria->removerPor('idextrusoraPresetup = ' . $id);
 
     if(!$status){
@@ -52,7 +52,7 @@ if ($status) {
             $dadosMateria = array(
                 'idextrusoraPresetup' => $id,
                 'idmateriaPrima' => $v['idmateria'],
-                'lote' => utf8_decode($mp[1]),
+                'lote' => $mp[1],
                 'quantidade' => (float)str_replace(',', '.', $mp[2]),
                 'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario'],
                 'dataCriacao' => getData()
