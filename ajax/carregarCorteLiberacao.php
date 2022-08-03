@@ -16,10 +16,10 @@ $arrayObservacao = $objObservacao->listar('e.idcorteLiberacao = ' . $arraySetup[
 
 if($arrayObservacao) {
     foreach ($arrayObservacao as $key => $value) {
-        $arrayObservacao[$key]['observacao'] = utf8_encode($arrayObservacao[$key]['observacao']);
+        $arrayObservacao[$key]['observacao'] = $arrayObservacao[$key]['observacao'];
     }
 }
 
 $arraySetup['observacoes'] = retornarJsonEncode($arrayObservacao);
 
-echo retornarJsonEncode(array_map('utf8_encode', $arraySetup));
+echo retornarJsonEncode($arraySetup);

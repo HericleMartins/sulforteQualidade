@@ -26,4 +26,4 @@ if(strtoupper(COM_CONTROLE_IMPRESSAO) != strtoupper($arrayOrdem['impresso'])){
 
 $arrayOrdem['materias'] = retornarJsonEncode($arrayMaterias);
 
-echo retornarJsonEncode(array_map('utf8_encode', $arrayOrdem));
+echo retornarJsonEncode($arrayOrdem);
