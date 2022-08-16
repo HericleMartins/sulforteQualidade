@@ -1,0 +1,9 @@
+address=nfe@brf-br.com
+anexo=nfe43201203531235000106550010000744991901441885.xml
+username=nfe@sulforte.com.br
+fromname=Sulforte Plasticos
+password=sulfortenfe
+host=smtp.gmail.com
+subject=Sulforte Plasticos: Envio Arquivo XML de NFiscal 74499
+body=<br>À<br>BRF S.A.<br><br>Emitimos a Nota Fiscal NFiscal 74499 em  para a sua empresa.<br>Você está recebendo a nota fiscal eletrônica em padrão XML, documento de existência apenas digital, emitido e armazenado eletronicamente e instituída pelo Ajuste SINIEF 07/05 e especificada pelo Ato COTEPE 72/05.<br>Os destinatários da NF-e, seja ele emissor ou não de NF-e, deve consultar a validade do documento na Internet utilizando-se de sua Chave de Acesso, com 44 posições.<br><br><br>Para consulta completa da NF-e no site da Secretaria da Fazenda clicar em:<br><br>https://www.sefaz.rs.gov.br/NFE/NFE-COM.aspx<br><br>CHAVE: 43201203531235000106550010000744991901441885<br><br><br><br>Agradecemos o recebimento de comentários para o e-mail willy@sulforte.com.br .<br><br><br>Dúvidas: Favor contatar: (51) 3364.7786<br><br>Att<br><br>Sulforte Plásticos<br>
+altbody=%%%%%%BRF %%%%%%Emitimos a Nota Fiscal NFiscal 74499 em  para a sua empr%%%Você está recebendo a nota fiscal eletrônica em padrão XML, documento de existência apenas digital, emitido e armazenado eletronicamente e instituída pelo Ajuste SINIEF 07/05 e especificada pelo Ato COTEPE 72%%%Os destinatários da NF-e, seja ele emissor ou não de NF-e, deve consultar a validade do documento na Internet utilizando-se de sua Chave de Acesso, com 44 posiç%%%%%%%%%Para consulta completa da NF-e no site da Secretaria da Fazenda clicar%%%%%%https://www.sefaz.rs.gov.br/NFE/NFE-COM.%%%%%%CHAVE: 4320120353123500010655001000074499190144%%%%%%%%%%%%Agradecemos o recebimento de comentários para o e-mail willy@sulforte.com.%%%%%%%%%Dúvidas: Favor contatar: (51) 3364.%%%%%%%%%%%%Sulforte Plást%%%

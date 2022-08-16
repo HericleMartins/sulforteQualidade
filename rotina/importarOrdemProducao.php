@@ -13,8 +13,9 @@ if ( file_exists($directory) ) {
     foreach ( glob($directory . '*.' . $extension) as $file ) {
         $fileName = end(explode("/",strtolower($file)));
         $objOP = new OrdemProducao();
-        //confirma se ï¿½ um arquivo com o nome padrï¿½o de OP
+        //confirma se é um arquivo com o nome padrão de OP
         if ((substr($fileName, 0, 3) == 'pcp') || (substr($fileName, 0, 2) == 'mp')) {
+
             $handle = fopen($file, "r");
             if ($handle) {
                 while (($line = fgets($handle)) !== false) {
@@ -37,7 +38,9 @@ if ( file_exists($directory) ) {
             $objLog = new LogImportacao();
 
             if($status){
+
                 $statusCommit = SqlServer::confirmarTransacao();
+
                 if($statusCommit) {
                     $arrayArquivo = explode('/', $file);
                     $arquivo = end($arrayArquivo);
@@ -61,5 +64,5 @@ if ( file_exists($directory) ) {
     }
 }
 else {
-    echo 'Diretï¿½rio invï¿½lido';
+    echo 'Diretório inválido';
 }

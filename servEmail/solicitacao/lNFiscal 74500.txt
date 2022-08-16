@@ -1,0 +1,9 @@
+address=jean.castro@brf.com
+anexo=laudo74500_15403.pdf
+username=danfe@sulforte.com.br
+fromname=Sulforte Plasticos
+password=sulforte
+host=smtp.gmail.com
+subject=Sulforte Plasticos: Envio de Laudo(s) de NFiscal 74500
+body=<br>À<br>BRF S.A.<br><br>Emitimos a Nota Fiscal NFiscal 74500 em 04/12/2020 para a sua empresa.<br><br>Você está recebendo os Laudos de Qualidade referentes aos produtos desta nota fiscal.<br><br><br>Agradecemos o recebimento de comentários para o e-mail willy@sulforte.com.br .<br><br><br>Dúvidas: Favor contatar: (51) 3364.7786<br><br>Att<br><br>Sulforte Plásticos<br><br>
+altbody=%%%%%%BRF %%%%%%Emitimos a Nota Fiscal NFiscal 74500 em 04/12/2020 para a sua empr%%%%%%Você está recebendo os Laudos de Qualidade referentes aos produtos desta nota fis%%%%%%%%%Agradecemos o recebimento de comentários para o e-mail willy@sulforte.com.%%%%%%%%%Dúvidas: Favor contatar: (51) 3364.%%%%%%%%%%%%Sulforte Plást%%%%%%

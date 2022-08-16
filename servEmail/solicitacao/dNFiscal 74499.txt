@@ -1,0 +1,9 @@
+address=lenarocha@terra.com.br
+anexo=danfe74499.pdf
+username=danfe@sulforte.com.br
+fromname=Sulforte Plasticos
+password=sulforte
+host=smtp.gmail.com
+subject=Sulforte Plasticos: Danfe referente a NFiscal 74499
+body=À<br><br>BRF S.A.<br><br><br><br>Emitimos a Nota Fiscal NFiscal 74499 em  para a sua empresa.<br><br>Você está recebendo a DANFE referente a esta nota fiscal.<br><br><br><br>Caso o arquivo nao esteja em anexo favor entrar em contato.<br><br><br><br>Dúvidas: Favor contatar: (51) 3364.7786<br><br><br><br>Att<br><br><br><br>Sulforte Plásticos<br><br><br><br>
+altbody=À%%%BRF S.A.%%%%%%Emitimos a Nota Fiscal NFiscal 74499 em  para a sua empresa.%%%Você está recebendo a DANFE referente a esta nota fiscal.%%%%%%Caso o arquivo nao esteja em anexo favor entrar em contato.%%%%%%Dúvidas: Favor contatar: (51) 3364.7786%%%%%%Att%%%%%%Sulforte Plásticos%%%%%%

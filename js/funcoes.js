@@ -735,17 +735,12 @@ function semAnaliseImpressora(form) {
     }
     $(form + ' .selectpicker').selectpicker('refresh');
 }
-
 function populaDadosAnalise(dados, acao) {
-
     var modal = '#modalCadastrarExtrusoraAnalise';
     var obj = JSON.parse(dados);
-
     if (acao == 'editar') {
-
         $(modal + " #semAnalise").prop('checked', obj.semAnalise);
         semAnaliseExtrusao('#modalCadastrarExtrusoraAnalise');
-
         if (obj.tipoMedida == 1) {
             $(modal + " input[name='tipoMedida']")[0].checked = true;
             $('.espessuraMedida input').prop('disabled', false);
@@ -764,16 +759,12 @@ function populaDadosAnalise(dados, acao) {
             $('#formExtrusoraAnalise .espessuraPeso').show();
             $('#formExtrusoraAnalise .espessuraMedida').hide();
         }
-
         $(modal + " #salvarAnalise").html('Salvar');
-
         $(modal + " input[name='largura']").val(obj.largura.replace('.', ','));
         $(modal + " input[name='sanfonaEsq']").val(obj.sanfonaEsq.replace('.', ','));
         $(modal + " input[name='sanfonaDir']").val(obj.sanfonaDir.replace('.', ','));
         $(modal + " #impressao").val(obj.impressao);
-
         $(modal + " #faceamento").val(obj.faceamento);
-
         //verifica se operador está ativo
         if ($(modal + " #operador option[value='" + obj.idoperador + "']").length == 0) {
             $(modal + " #operador").append("<option value='" + obj.idoperador + "'>" + obj.operador + "</option>").val(obj.idoperador);
@@ -797,11 +788,8 @@ function populaDadosAnalise(dados, acao) {
         $(modal + ' #observacao').selectpicker('val', obs);
 
     } else if (acao == 'visualizar') {
-
         var modal = '#modalVisualizarExtrusoraAnalise';
-
         if (obj.tipoMedida == 1) {
-
             $(modal + " span[name='espessuraLargura']").html('');
             $(modal + " span[name='espessuraComprimento']").html('');
             $(modal + " span[name='espessuraPeso']").html('');
@@ -830,7 +818,6 @@ function populaDadosAnalise(dados, acao) {
         $(modal + " #bobina").html(obj.numero);
         $(modal + " #analista").html(obj.analista);
         $(modal + " #dataHora").html(obj.dataCriacaoData + ' - ' + obj.dataCriacaoHora);
-
         var observacoes = $.parseJSON(obj.observacoes);
         var obs = [];
         $.each(observacoes, function (i, val) {
