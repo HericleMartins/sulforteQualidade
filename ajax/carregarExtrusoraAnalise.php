@@ -20,4 +20,4 @@ if($arrayObservacao) {
 
 $arrayAnalise['observacoes'] = retornarJsonEncode($arrayObservacao);
 
-echo retornarJsonEncode($arrayAnalise);
+echo retornarJsonEncode(array_map('utf8_encode', $arrayAnalise));
