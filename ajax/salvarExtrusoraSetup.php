@@ -51,7 +51,7 @@ if($r['idextrusoraSetup'] != '') {
             'faceamento'            => (($r['faceamento'] != '') ? (int)$r['faceamento'] : NULL)
         );
     }
-    $dados = $dados;
+    $dados = array_map('utf8_decode', $dados);
     //Verifica se sanfona � NULL
     $dados['sanfonaEsq'] = ($r['sanfonaEsq'] ? str_replace(',', '.', $r['sanfonaEsq']) : NULL);
     $dados['sanfonaDir'] = ($r['sanfonaDir'] ? str_replace(',', '.', $r['sanfonaDir']) : NULL);
@@ -95,7 +95,7 @@ if($r['idextrusoraSetup'] != '') {
             'dataCriacao'           => getData()
         );
     }
-    $dados = $dados;
+    $dados = array_map('utf8_decode', $dados);
     //Verifica se sanfona � NULL
     $dados['sanfonaEsq'] = ($r['sanfonaEsq'] ? str_replace(',', '.', $r['sanfonaEsq']) : NULL);
     $dados['sanfonaDir'] = ($r['sanfonaDir'] ? str_replace(',', '.', $r['sanfonaDir']) : NULL);
@@ -129,7 +129,7 @@ if ($status) {
                 'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario'],
                 'dataCriacao' => getData()
             );
-            $dadosObs =  $dadosObs;
+            $dadosObs =  array_map('utf8_decode', $dadosObs);
 
             $objObs = new ExtrusoraSetupObservacao();
 

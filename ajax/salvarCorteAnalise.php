@@ -5,7 +5,6 @@ $r = getRequest($_POST);
 $obj = new CorteAnalise();
 
 if($r['idcorteAnalise'] != '') {
-
     $dados = array(
         'idoperador'            => (isset($r['operador']) ? (int)$r['operador'] : NULL),
         'idordemProducaoBobina' => (int)$r['bobina'],
@@ -22,9 +21,7 @@ if($r['idcorteAnalise'] != '') {
         'semAnalise'            => ($r['semAnalise'] == '1' ? 1 : NULL),
         'reinspecao'            => ($r['reinspecao'] == '1' ? 1 : NULL)
     );
-
 } else {
-
     //cadastro
     $dados = array(
         'idmaquina'             => (int)$r['idmaquina'],
@@ -58,7 +55,7 @@ if ($r['bobinaValorOutro']){
         'idoperador' => 1, //criar operador "sistema" no BD
         'dataCriacao' => getData()
     );
-    $dadosOutraBobina = $dadosOutraBobina;
+    $dadosOutraBobina = array_map('utf8_decode', $dadosOutraBobina);
     $objOutraBobina = new OrdemProducaoBobina();
     $statusOutraBobina = $objOutraBobina->cadastrar($dadosOutraBobina);
     $idoutraBobina = $sql->lastID;
@@ -107,7 +104,7 @@ if ($status) {
                 'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario'],
                 'dataCriacao' => getData()
             );
-            $dadosObs = $dadosObs;
+            $dadosObs = array_map('utf8_decode', $dadosObs);
 
             $objObs = new CorteAnaliseObservacao();
 

@@ -84,7 +84,7 @@ if ($r['bobinaValorOutro']){
         'idoperador' => 1, //criar operador "sistema" no BD
         'dataCriacao' => getData()
     );
-    $dadosOutraBobina = $dadosOutraBobina;
+    $dadosOutraBobina = array_map('utf8_decode',$dadosOutraBobina);
     $objOutraBobina = new OrdemProducaoBobina();
     $statusOutraBobina = $objOutraBobina->cadastrar($dadosOutraBobina);
     $idoutraBobina = $sql->lastID;
@@ -133,7 +133,7 @@ if ($status) {
                 'idusuario' => $_SESSION[SESSAO_SISTEMA]['idusuario'],
                 'dataCriacao' => getData()
             );
-            $dadosObs = $dadosObs;
+            $dadosObs = array_map('utf8_decode',$dadosObs);
 
             $objObs = new RefileLiberacaoObservacao();
 
