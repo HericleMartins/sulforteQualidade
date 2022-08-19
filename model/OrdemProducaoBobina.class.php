@@ -138,7 +138,7 @@ class OrdemProducaoBobina {
     }
     public static function bobinasNaoAnalisadas($idUsuario,$dataInicial,$dataFinal) {
         global $sql;
-        $sql->ExecuteSQL("SELECT *,( SELECT MAX(OPB.DATACRIACAO) FROM ordemProducaoBobina opb where opb.idordemProducao = G.idordemProducao ) as dataUltimaPesada from(
+        $sql->ExecuteSQL("SELECT *,( SELECT CAST(MAX(OPB.DATACRIACAO) AS DATE) FROM ordemProducaoBobina opb where opb.idordemProducao = G.idordemProducao ) as dataUltimaPesada from(
           SELECT
             numero,
             maquina,
@@ -178,7 +178,7 @@ class OrdemProducaoBobina {
                    B.maquina,
                    M.idmaquina,
                    O.item,
-                   C.cliente ) AS C) as G where G.quantBobinaPesada - G.quantRegistro > 0");
+                   C.cliente ) AS C) as G where (G.quantBobinaPesada - G.quantRegistro) > 0");
         if ($sql->numRows() > 0) {
             return $sql->arrayResults();
         }

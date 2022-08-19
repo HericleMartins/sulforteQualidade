@@ -9,7 +9,6 @@
         carregarIndice();
     });
     function carregarIndice() {
-
         waitingDialog.show();
         $("#resultado").empty();
         $("#tituloResultado").empty();
@@ -174,7 +173,10 @@
                     campo.append(r[i].item);
                     linha.append(campo);
                     campo = document.createElement("td");
-                    campo.append(r[i].dataCriacao);
+                    let data = new Date(r[i].dataCriacao);
+                    data.setHours(data.getHours() + 3);
+                    campo.append(data.toLocaleDateString());
+                    console.log(r[i].dataCriacao);
                     linha.append(campo);
                     campo = document.createElement("td");
                     campo.append(r[i].usuario);
@@ -265,12 +267,16 @@
                     campo.append(r[i].item);
                     linha.append(campo);
                     if (r[i].dataCriacao) {
+                        let data = new Date(r[i].dataCriacao);
+                        data.setHours(data.getHours() + 3);
                         campo = document.createElement("td");
-                        campo.append(r[i].dataCriacao);
+                        campo.append(data.toLocaleDateString());
                         linha.append(campo);
                     } else if (r[i].dataUltimaPesada) {
+                        let data = new Date(r[i].dataUltimaPesada);
+                        data.setHours(data.getHours() + 3);
                         campo = document.createElement("td");
-                        campo.append(r[i].dataUltimaPesada);
+                        campo.append(data.toLocaleDateString());
                         linha.append(campo);
                     }
                     campo = document.createElement("td");

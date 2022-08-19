@@ -94,28 +94,28 @@ class Usuario
     public static function carregarAnalisesExtrusao($idusuario,$dataInicial,$dataFinal)
     {
         global $sql;
-        $sql->executar("SELECT v.numero,op.numero,v.dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoExtrusao v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario order by dataCriacao desc;", false);
+        $sql->executar("SELECT v.numero,op.numero,CAST(v.dataCriacao AS DATE) as dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoExtrusao v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario order by dataCriacao desc;", false);
         $arrayExtrusao = $sql->ArrayResults();
         return $arrayExtrusao;
     }
     public static function carregarAnalisesRefile($idusuario,$dataInicial,$dataFinal)
     {
         global $sql;
-        $sql->executar("SELECT v.numero,op.numero,v.dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoRefile v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario order by dataCriacao desc;", false);
+        $sql->executar("SELECT v.numero,op.numero,CAST(v.dataCriacao AS DATE) as dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoRefile v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario order by dataCriacao desc;", false);
         $arrayExtrusao = $sql->ArrayResults();
         return $arrayExtrusao;
     }
     public static function carregarAnalisesImpressao($idusuario,$dataInicial,$dataFinal)
     {
         global $sql;
-        $sql->executar("SELECT v.numero,op.numero,v.dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoImpressora v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario order by dataCriacao desc;", false);
+        $sql->executar("SELECT v.numero,op.numero,CAST(v.dataCriacao AS DATE) as dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoImpressora v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario order by dataCriacao desc;", false);
         $arrayExtrusao = $sql->ArrayResults();
         return $arrayExtrusao;
     }
     public static function carregarAnalisesCorte($idusuario,$dataInicial,$dataFinal)
     {
         global $sql;
-        $sql->executar("SELECT v.numero,op.numero,v.dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoCorte v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario order by dataCriacao desc;", false);
+        $sql->executar("SELECT v.numero,op.numero,CAST(v.dataCriacao AS DATE) as dataCriacao,op.item,m.maquina,c.cliente,v.usuario FROM viewAcompanhamentoCorte v inner join ordemProducao op on op.idordemProducao = v.idOrdemProducao inner join maquina m on m.idmaquina = v.idmaquina inner join cliente c on c.idcliente = op.idcliente  where ( CAST(v.dataCriacao AS DATE)  >= '$dataInicial' and CAST(v.dataCriacao AS DATE) <= '$dataFinal') and v.idusuario = $idusuario order by dataCriacao desc;", false);
         $arrayExtrusao = $sql->ArrayResults();
         return $arrayExtrusao;
     }
