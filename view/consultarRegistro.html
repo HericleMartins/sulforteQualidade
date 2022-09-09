@@ -188,5 +188,21 @@
     $('#exportarPdf').click(function () {
         generate();
     });
+    $('td > p').dblclick(function () {
+        let edit = prompt("Edição", $(this).text().trim());
+        if (edit != null) {
+            $(this).text(edit);
+        }
+    })
+    $(document).ready(function () {
+        $(".label-default").click(function () {
+            var row = $(this).parents("tr");
+            row.insertAfter(row.next());
+        });
+        $(".label-success").click(function () {
+            var row = $(this).parents("tr");
+            row.insertBefore(row.prev());
+        });
+    });
 
 </script>
